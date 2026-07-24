@@ -1,0 +1,144 @@
+/* ==========================================
+   Weekly Reports System
+   Login Page
+========================================== */
+
+/* ==========================
+   Body
+========================== */
+
+body {
+
+    background:
+        linear-gradient(135deg,
+            #4F46E5 0%,
+            #6366F1 40%,
+            #7C3AED 100%);
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    overflow: hidden;
+
+    position: relative;
+
+}
+
+/* ==========================
+   Animated Background
+========================== */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+
+        radial-gradient(circle at 15% 20%,
+            rgba(255,255,255,.22),
+            transparent 30%),
+
+        radial-gradient(circle at 85% 15%,
+            rgba(255,255,255,.18),
+            transparent 25%),
+
+        radial-gradient(circle at 50% 90%,
+            rgba(255,255,255,.15),
+            transparent 35%);
+
+    animation: float 12s ease-in-out infinite;
+
+    z-index: -2;
+
+}
+
+/* ==========================
+   Floating Blur
+========================== */
+
+body::after {
+
+    content: "";
+
+    position: fixed;
+
+    width: 650px;
+
+    height: 650px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.15);
+
+    filter: blur(120px);
+
+    top: -180px;
+
+    left: -180px;
+
+    animation: float 8s ease-in-out infinite;
+
+    z-index: -1;
+
+}
+
+/* ==========================
+   Login Wrapper
+========================== */
+
+.login-wrapper {
+
+    width: 100%;
+
+    max-width: 1400px;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 40px;
+
+}
+
+/* ==========================
+   Login Card
+========================== */
+
+.login-card {
+
+    width: 470px;
+
+    max-width: 100%;
+
+    background: var(--glass);
+
+    backdrop-filter: var(--blur);
+
+    border: 1px solid var(--glass-border);
+
+    border-radius: 28px;
+
+    box-shadow: var(--shadow-lg);
+
+    padding: 45px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    animation: zoomIn .7s ease;
+
+}
