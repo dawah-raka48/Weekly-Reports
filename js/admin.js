@@ -416,15 +416,25 @@ async function saveEmployee(){
 
     });
 
-    if(result.success){
+    if (result.success) {
 
-        document
+    document.getElementById("empName").value = "";
+
+    document.getElementById("empUsername").value = "";
+
+    document.getElementById("empPassword").value = "";
+
+    document.getElementById("empDepartment").selectedIndex = 0;
+
+    document.getElementById("empRole").selectedIndex = 0;
+
+    document
         .getElementById("employeeModal")
         .classList
         .remove("show");
 
-        employeesPage();
+    employeesPage();
 
-    }
+    alert("تمت إضافة الموظف بنجاح");
 
 }
