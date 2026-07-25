@@ -369,9 +369,13 @@ function setupEmployeeModal() {
    Save Employee
 ========================================== */
 
-document
-.getElementById("saveEmployee")
-.addEventListener("click", saveEmployee);
+window.addEventListener("DOMContentLoaded", () => {
+
+    document
+        .getElementById("saveEmployee")
+        .addEventListener("click", saveEmployee);
+
+});
 
 async function saveEmployee(){
 
