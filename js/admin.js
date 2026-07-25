@@ -62,62 +62,6 @@ function loadPage(page){
 ========================== */
 function employeesPage(){
 
-async function employeesPage(){
-
-const result = await api("getEmployees");
-
-let rows = "";
-
-result.employees.forEach(employee=>{
-
-rows+=`
-
-<tr>
-
-<td>${employee.id}</td>
-
-<td>${employee.name}</td>
-
-<td>${employee.department}</td>
-
-<td>${employee.username}</td>
-
-<td>
-
-<span class="status active">
-
-نشط
-
-</span>
-
-</td>
-
-<td>
-
-<div class="actions">
-
-<button class="icon-btn edit-btn">
-
-<i class="fa-solid fa-pen"></i>
-
-</button>
-
-<button class="icon-btn delete-btn">
-
-<i class="fa-solid fa-trash"></i>
-
-</button>
-
-</div>
-
-</td>
-
-</tr>
-
-`;
-
-});
-
 content.innerHTML=`
 
 <div class="section-title">
@@ -166,7 +110,47 @@ content.innerHTML=`
 
 <tbody>
 
-${rows}
+<tr>
+
+<td>1</td>
+
+<td>محمد أحمد</td>
+
+<td>الإدارة</td>
+
+<td>admin01</td>
+
+<td>
+
+<span class="status active">
+
+نشط
+
+</span>
+
+</td>
+
+<td>
+
+<div class="actions">
+
+<button class="icon-btn edit-btn">
+
+<i class="fa-solid fa-pen"></i>
+
+</button>
+
+<button class="icon-btn delete-btn">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+</div>
+
+</td>
+
+</tr>
 
 </tbody>
 
