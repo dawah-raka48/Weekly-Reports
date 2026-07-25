@@ -60,15 +60,16 @@ function loadPage(page){
 /* ==========================
    Employees
 ========================== */
-async function employeesPage(){
 
-const result = await api("getEmployees");
+async function employeesPage() {
 
-let rows = "";
+    const result = await api("getEmployees");
 
-result.employees.forEach(employee=>{
+    let rows = "";
 
-rows+=`
+    result.employees.forEach(employee => {
+
+        rows += `
 
 <tr>
 
@@ -82,9 +83,9 @@ rows+=`
 
 <td>
 
-<span class="status active">
+<span class="status ${employee.status === "active" ? "active" : "stop"}">
 
-نشط
+${employee.status === "active" ? "نشط" : "موقوف"}
 
 </span>
 
@@ -114,10 +115,9 @@ rows+=`
 
 `;
 
-});
+    });
 
-content.innerHTML=`
- 
+    content.innerHTML = `
 
 <div class="section-title">
 
@@ -174,6 +174,9 @@ ${rows}
 </div>
 
 `;
+
+    // تشغيل نافذة إضافة الموظف
+    setupEmployeeModal();
 
 }
 
