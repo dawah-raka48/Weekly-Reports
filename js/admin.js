@@ -60,7 +60,6 @@ function loadPage(page){
 /* ==========================
    Employees
 ========================== */
-
 function employeesPage(){
 
 content.innerHTML=`
@@ -85,21 +84,77 @@ content.innerHTML=`
 
 </div>
 
-<div class="empty-card">
+<div class="table-container">
 
-<i class="fa-solid fa-users"></i>
+<table>
 
-<h3>
+<thead>
 
-لا يوجد موظفون حتى الآن
+<tr>
 
-</h3>
+<th>#</th>
 
-<p>
+<th>الاسم</th>
 
-سيتم عرض الموظفين هنا بعد إضافتهم.
+<th>القسم</th>
 
-</p>
+<th>اسم المستخدم</th>
+
+<th>الحالة</th>
+
+<th>الإجراءات</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>1</td>
+
+<td>محمد أحمد</td>
+
+<td>الإدارة</td>
+
+<td>admin01</td>
+
+<td>
+
+<span class="status active">
+
+نشط
+
+</span>
+
+</td>
+
+<td>
+
+<div class="actions">
+
+<button class="icon-btn edit-btn">
+
+<i class="fa-solid fa-pen"></i>
+
+</button>
+
+<button class="icon-btn delete-btn">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 </div>
 
