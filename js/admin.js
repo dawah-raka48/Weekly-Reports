@@ -118,6 +118,8 @@ rows+=`
 
 content.innerHTML=`
 
+setupEmployeeModal(); 
+
 <div class="section-title">
 
 <h2>
@@ -323,3 +325,41 @@ setInterval(updateClock,1000);
 ========================== */
 
 employeesPage();
+
+/* ==========================================
+   Employee Modal
+========================================== */
+
+function setupEmployeeModal() {
+
+    const addBtn = document.querySelector(".primary-btn");
+
+    const modal = document.getElementById("employeeModal");
+
+    const closeBtn = document.getElementById("closeModal");
+
+    if (!addBtn || !modal || !closeBtn) return;
+
+    addBtn.onclick = () => {
+
+        modal.classList.add("show");
+
+    };
+
+    closeBtn.onclick = () => {
+
+        modal.classList.remove("show");
+
+    };
+
+    modal.onclick = (e) => {
+
+        if (e.target === modal) {
+
+            modal.classList.remove("show");
+
+        }
+
+    };
+
+}
