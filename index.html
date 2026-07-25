@@ -10,13 +10,10 @@
 
     <title>نظام التقارير الأسبوعية</title>
 
-    <meta name="description"
-          content="نظام التقارير الأسبوعية">
-
     <meta name="theme-color"
           content="#4F46E5">
 
-    <!-- Google Font -->
+    <!-- Cairo Font -->
 
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
@@ -51,19 +48,125 @@
 
 <body>
 
-    <div id="app">
+<div class="login-wrapper">
+
+    <div class="login-card fade-up">
+
+        <!-- Logo -->
+
+        <div class="logo float">
+
+            <img src="assets/logo.png"
+                 alt="Logo">
+
+        </div>
+
+        <!-- Title -->
+
+        <h1 class="login-title">
+
+            نظام التقارير الأسبوعية
+
+        </h1>
+
+        <p class="login-subtitle">
+
+            جمعية الدعوة والإرشاد وتوعية الجاليات بالراكة
+
+        </p>
+
+        <!-- Login Form -->
+
+        <form class="login-form">
+
+            <div class="input-group">
+
+                <i class="fa-solid fa-user"></i>
+
+                <input
+                    id="username"
+                    type="text"
+                    placeholder="اسم المستخدم">
+
+            </div>
+
+            <div class="input-group">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="كلمة المرور">
+
+            </div>
+
+            <button
+                id="loginBtn"
+                type="button"
+                class="login-btn ripple">
+
+                <span id="loginText">
+
+                    تسجيل الدخول
+
+                </span>
+
+            </button>
+
+        </form>
+
+        <!-- Bottom -->
+
+        <div class="login-actions">
+
+            <button
+                id="themeBtn"
+                class="action-btn">
+
+                <i class="fa-solid fa-moon"></i>
+
+                <span>
+
+                    الثيم
+
+                </span>
+
+            </button>
+
+            <button
+                id="installBtn"
+                class="action-btn">
+
+                <i class="fa-solid fa-download"></i>
+
+                <span>
+
+                    تثبيت التطبيق
+
+                </span>
+
+            </button>
+
+        </div>
+
+        <div class="login-footer">
+
+            الإصدار 1.0
+
+        </div>
 
     </div>
 
-    <!-- JavaScript -->
+</div>
 
-    <script src="js/config.js"></script>
+<script src="js/config.js"></script>
 
-    <script src="js/storage.js"></script>
+<script src="js/storage.js"></script>
 
-    <script src="js/auth.js"></script>
+<script src="js/auth.js"></script>
 
-    <script src="js/login.js"></script>
+<script src="js/login.js"></script>
 
 </body>
 
