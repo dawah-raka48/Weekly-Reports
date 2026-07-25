@@ -117,8 +117,7 @@ rows+=`
 });
 
 content.innerHTML=`
-
-setupEmployeeModal(); 
+ 
 
 <div class="section-title">
 
