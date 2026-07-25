@@ -365,3 +365,62 @@ function setupEmployeeModal() {
     };
 
 }
+/* ==========================================
+   Save Employee
+========================================== */
+
+document
+.getElementById("saveEmployee")
+.addEventListener("click", saveEmployee);
+
+async function saveEmployee(){
+
+    const name =
+    document.getElementById("empName").value.trim();
+
+    const username =
+    document.getElementById("empUsername").value.trim();
+
+    const password =
+    document.getElementById("empPassword").value.trim();
+
+    const department =
+    document.getElementById("empDepartment").value;
+
+    const role =
+    document.getElementById("empRole").value;
+
+    if(!name || !username || !password){
+
+        alert("يرجى إدخال جميع البيانات");
+
+        return;
+
+    }
+
+    const result = await api("addEmployee",{
+
+        name,
+
+        username,
+
+        password,
+
+        department,
+
+        role
+
+    });
+
+    if(result.success){
+
+        document
+        .getElementById("employeeModal")
+        .classList
+        .remove("show");
+
+        employeesPage();
+
+    }
+
+}
