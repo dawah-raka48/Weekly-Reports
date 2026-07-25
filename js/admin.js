@@ -433,7 +433,7 @@ async function saveEmployee(){
             .classList
             .remove("show");
 
-        employeesPage();
+        await employeesPage();
 
         alert("تمت إضافة الموظف بنجاح");
 
