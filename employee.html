@@ -114,15 +114,38 @@
 
 </label>
 
-<button
-    id="uploadBtn">
+const uploadBtn = document.getElementById("uploadBtn");
+const uploadText = document.getElementById("uploadText");
 
-    <i class="fa-solid fa-cloud-arrow-up"></i>
+uploadBtn.addEventListener("click", startUpload);
 
-    رفع التقرير
+async function startUpload(){
 
-</button>
+    if(!pdfFile.files.length){
 
+        alert("اختر ملف PDF أولاً");
+
+        return;
+
+    }
+
+    uploadBtn.disabled = true;
+
+    uploadText.innerHTML = `
+
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+&nbsp;
+
+جارٍ رفع التقرير...
+
+`;
+
+    /*
+        هنا سنضع كود الرفع الحقيقي
+    */
+
+}
         </section>
 
         <section class="card">
