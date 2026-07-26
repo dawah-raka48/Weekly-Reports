@@ -110,7 +110,8 @@ onclick="editEmployee(${employee.id})">
 </button>
 
 <button
-class="icon-btn delete-btn">
+class="icon-btn delete-btn"
+onclick="deleteEmployee(${employee.id})">
 
 <i class="fa-solid fa-trash"></i>
 
@@ -477,5 +478,30 @@ function editEmployee(id){
     document.querySelector(".modal-title").textContent = "تعديل الموظف";
 
     document.getElementById("employeeModal").classList.add("show");
+
+}
+async function deleteEmployee(id){
+
+    const ok = confirm("هل تريد حذف هذا الموظف؟");
+
+    if(!ok) return;
+
+    const result = await api("deleteEmployee",{
+
+        id
+
+    });
+
+    if(result.success){
+
+        await employeesPage();
+
+        alert("تم حذف الموظف بنجاح");
+
+    }else{
+
+        alert(result.message);
+
+    }
 
 }
