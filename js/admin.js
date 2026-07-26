@@ -411,19 +411,23 @@ async function saveEmployee(){
 
     }
 
-    const result = await api("addEmployee",{
+    const action = editingEmployeeId ? "updateEmployee" : "addEmployee";
 
-        name,
+    const result = await api(action, {
 
-        username,
+    id: editingEmployeeId,
 
-        password,
+    name,
 
-        department,
+    username,
 
-        role
+    password,
 
-    });
+    department,
+
+    role
+
+});
 
         if (result.success) {
 
@@ -441,6 +445,9 @@ async function saveEmployee(){
             .getElementById("employeeModal")
             .classList
             .remove("show");
+        editingEmployeeId = null;
+
+document.querySelector(".modal-title").textContent = "إضافة موظف";
 
         await employeesPage();
 
