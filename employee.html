@@ -41,10 +41,13 @@
 
 <div class="employee-container">
 
+    <!-- Header -->
+
     <header class="employee-header">
 
         <img src="assets/logo.png"
-             class="logo">
+             class="logo"
+             alt="Logo">
 
         <div class="employee-info">
 
@@ -80,7 +83,11 @@
 
     </header>
 
+    <!-- Content -->
+
     <main>
+
+        <!-- Upload -->
 
         <section class="card">
 
@@ -93,60 +100,47 @@
             </h3>
 
             <input
-    id="pdfFile"
-    type="file"
-    accept=".pdf"
-    hidden>
+                id="pdfFile"
+                type="file"
+                accept=".pdf"
+                hidden>
 
-<label
-    class="upload-box"
-    for="pdfFile">
+            <label
+                class="upload-box"
+                for="pdfFile">
 
-    <i class="fa-solid fa-file-pdf"></i>
+                <i class="fa-solid fa-file-pdf"></i>
 
-    <h3>اختر ملف PDF</h3>
+                <h3>
 
-    <p id="selectedFile">
+                    اختر ملف PDF
 
-        لم يتم اختيار أي ملف
+                </h3>
 
-    </p>
+                <p id="selectedFile">
 
-</label>
+                    لم يتم اختيار أي ملف
 
-const uploadBtn = document.getElementById("uploadBtn");
-const uploadText = document.getElementById("uploadText");
+                </p>
 
-uploadBtn.addEventListener("click", startUpload);
+            </label>
 
-async function startUpload(){
+            <button
+                id="uploadBtn">
 
-    if(!pdfFile.files.length){
+                <span id="uploadText">
 
-        alert("اختر ملف PDF أولاً");
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
 
-        return;
+                    رفع التقرير
 
-    }
+                </span>
 
-    uploadBtn.disabled = true;
+            </button>
 
-    uploadText.innerHTML = `
-
-<i class="fa-solid fa-spinner fa-spin"></i>
-
-&nbsp;
-
-جارٍ رفع التقرير...
-
-`;
-
-    /*
-        هنا سنضع كود الرفع الحقيقي
-    */
-
-}
         </section>
+
+        <!-- Reports -->
 
         <section class="card">
 
