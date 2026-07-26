@@ -211,3 +211,70 @@ async function uploadReport() {
     reader.readAsDataURL(file);
 
 }
+loadReports();
+
+async function loadReports(){
+
+    const result = await api("getReports",{
+
+        employeeId: currentUser.id
+
+    });
+
+    if(!result.success) return;
+
+    let html = "";
+
+    if(result.reports.length===0){
+
+        html = `
+        <div class="empty">
+            لا توجد تقارير حتى الآن
+        </div>
+        `;
+
+    }else{
+
+        result.reports.forEach(report=>{
+
+            html += `
+
+            <div class="report-item">
+
+                <div>
+
+                    <strong>
+
+                        الأسبوع ${report.week}
+
+                    </strong>
+
+                    <br>
+
+                    ${report.uploadDate}
+
+                </div>
+
+                <a
+
+                    href="${report.url}"
+
+                    target="_blank"
+
+                    class="view-btn">
+
+                    عرض
+
+                </a>
+
+            </div>
+
+            `;
+
+        });
+
+    }
+
+    document.getElementById("reportsTable").innerHTML = html;
+
+}
