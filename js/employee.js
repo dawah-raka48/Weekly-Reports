@@ -220,7 +220,7 @@ async function loadReports(){
         employeeId: currentUser.id
 
     });
-
+    console.log(result);
     if(!result.success) return;
 
     let html = "";
