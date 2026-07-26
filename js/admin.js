@@ -95,13 +95,16 @@ ${employee.status === "active" ? "نشط" : "موقوف"}
 
 <div class="actions">
 
-<button class="icon-btn edit-btn">
+<button
+class="icon-btn edit-btn"
+onclick="editEmployee(${employee.id})">
 
 <i class="fa-solid fa-pen"></i>
 
 </button>
 
-<button class="icon-btn delete-btn">
+<button
+class="icon-btn delete-btn">
 
 <i class="fa-solid fa-trash"></i>
 
