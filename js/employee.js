@@ -140,15 +140,74 @@ async function uploadReport() {
     uploadBtn.disabled = true;
 
     uploadText.innerHTML = `
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        &nbsp;
+        جارٍ رفع التقرير...
+    `;
 
-<i class="fa-solid fa-spinner fa-spin"></i>
+    const file = pdfFile.files[0];
 
-&nbsp;
+    const reader = new FileReader();
 
-جارٍ رفع التقرير...
+    reader.onload = async function () {
 
-`;
+        const base64 = reader.result.split(",")[1];
 
-    // سيتم وضع كود الرفع هنا
+        const result = await api("uploadReport", {
+
+            employeeId: currentUser.id,
+
+            employeeName: currentUser.name,
+
+            department: currentUser.department,
+
+            week: getWeekNumber(new Date()),
+
+            fileName: file.name,
+
+            mimeType: file.type,
+
+            fileData: base64
+
+        });
+
+        if (result.success) {
+
+            uploadText.innerHTML = `
+                <i class="fa-solid fa-circle-check"></i>
+                تم رفع التقرير
+            `;
+
+            setTimeout(() => {
+
+                uploadBtn.disabled = false;
+
+                uploadText.innerHTML = `
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    رفع التقرير
+                `;
+
+                pdfFile.value = "";
+
+                selectedFile.innerHTML = "لم يتم اختيار أي ملف";
+
+            }, 2000);
+
+        } else {
+
+            uploadBtn.disabled = false;
+
+            uploadText.innerHTML = `
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                رفع التقرير
+            `;
+
+            alert(result.message);
+
+        }
+
+    };
+
+    reader.readAsDataURL(file);
 
 }
