@@ -93,16 +93,35 @@
             </h3>
 
             <input
-                id="pdfFile"
-                type="file"
-                accept=".pdf">
+    id="pdfFile"
+    type="file"
+    accept=".pdf"
+    hidden>
 
-            <button
-                id="uploadBtn">
+<label
+    class="upload-box"
+    for="pdfFile">
 
-                رفع التقرير
+    <i class="fa-solid fa-file-pdf"></i>
 
-            </button>
+    <h3>اختر ملف PDF</h3>
+
+    <p id="selectedFile">
+
+        لم يتم اختيار أي ملف
+
+    </p>
+
+</label>
+
+<button
+    id="uploadBtn">
+
+    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+    رفع التقرير
+
+</button>
 
         </section>
 
