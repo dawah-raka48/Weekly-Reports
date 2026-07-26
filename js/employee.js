@@ -122,3 +122,33 @@ pdfFile.addEventListener(
     }
 
 );
+const uploadBtn = document.getElementById("uploadBtn");
+const uploadText = document.getElementById("uploadText");
+
+uploadBtn.addEventListener("click", uploadReport);
+
+async function uploadReport() {
+
+    if (!pdfFile.files.length) {
+
+        alert("اختر ملف PDF أولاً");
+
+        return;
+
+    }
+
+    uploadBtn.disabled = true;
+
+    uploadText.innerHTML = `
+
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+&nbsp;
+
+جارٍ رفع التقرير...
+
+`;
+
+    // سيتم وضع كود الرفع هنا
+
+}
