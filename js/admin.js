@@ -5,6 +5,10 @@
 
 const content = document.getElementById("content");
 
+let employeesData = [];
+
+let editingEmployeeId = null;
+
 const menuCards = document.querySelectorAll(".menu-card");
 
 menuCards.forEach(card => {
@@ -64,7 +68,9 @@ function loadPage(page){
 async function employeesPage() {
 
     const result = await api("getEmployees");
-
+    
+    employeesData = result.employees;
+    
     let rows = "";
 
     result.employees.forEach(employee => {
@@ -441,5 +447,28 @@ async function saveEmployee(){
         alert("تمت إضافة الموظف بنجاح");
 
     }
+
+}
+function editEmployee(id){
+
+    editingEmployeeId = id;
+
+    const employee = employeesData.find(e => Number(e.id) === Number(id));
+
+    if(!employee) return;
+
+    document.getElementById("empName").value = employee.name;
+
+    document.getElementById("empUsername").value = employee.username;
+
+    document.getElementById("empPassword").value = employee.password;
+
+    document.getElementById("empDepartment").value = employee.department;
+
+    document.getElementById("empRole").value = employee.role;
+
+    document.querySelector(".modal-title").textContent = "تعديل الموظف";
+
+    document.getElementById("employeeModal").classList.add("show");
 
 }
