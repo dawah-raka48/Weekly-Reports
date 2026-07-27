@@ -194,41 +194,131 @@ ${rows}
    Reports
 ========================== */
 
-function reportsPage(){
+async function reportsPage(){
 
-content.innerHTML=`
+    const result = await api("getReports");
 
-<div class="section-title">
+    let rows = "";
 
-<h2>
+    if(result.reports.length === 0){
 
-<i class="fa-solid fa-file-pdf"></i>
+        rows = `
 
-التقارير
+        <tr>
 
-</h2>
+            <td colspan="6">
 
-</div>
+                لا توجد تقارير
 
-<div class="empty-card">
+            </td>
 
-<i class="fa-solid fa-file-circle-check"></i>
+        </tr>
 
-<h3>
+        `;
 
-لا توجد تقارير
+    }else{
 
-</h3>
+        result.reports.forEach(report=>{
 
-<p>
+            rows += `
 
-ستظهر التقارير المرفوعة هنا.
+            <tr>
 
-</p>
+                <td>${report.employeeName}</td>
 
-</div>
+                <td>${report.department}</td>
 
-`;
+                <td>${report.week}</td>
+
+                <td>${new Date(report.uploadDate).toLocaleString("ar-EG",{
+
+                    year:"numeric",
+
+                    month:"2-digit",
+
+                    day:"2-digit",
+
+                    hour:"2-digit",
+
+                    minute:"2-digit"
+
+                })}</td>
+
+                <td>${report.status}</td>
+
+                <td>
+
+                    <a
+
+                        href="${report.url}"
+
+                        target="_blank"
+
+                        class="view-btn">
+
+                        عرض
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        });
+
+    }
+
+    content.innerHTML = `
+
+    <div class="section-title">
+
+        <h2>
+
+            <i class="fa-solid fa-file-pdf"></i>
+
+            التقارير
+
+        </h2>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>الموظف</th>
+
+                    <th>القسم</th>
+
+                    <th>الأسبوع</th>
+
+                    <th>تاريخ الرفع</th>
+
+                    <th>الحالة</th>
+
+                    <th>عرض</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${rows}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    `;
 
 }
 
