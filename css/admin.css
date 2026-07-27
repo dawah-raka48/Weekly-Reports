@@ -707,3 +707,30 @@ tbody tr:hover{
     font-weight:700;
 
 }
+.view-btn{
+
+    display:inline-block;
+
+    padding:8px 18px;
+
+    background:#4F46E5;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.view-btn:hover{
+
+    background:#4338CA;
+
+}
