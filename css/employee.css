@@ -178,19 +178,13 @@ main{
 
 #reportsTable{
 
-    min-height:250px;
+    max-height: 320px;
 
-    display:flex;
+    overflow-y: auto;
 
-    align-items:center;
+    overflow-x: hidden;
 
-    justify-content:center;
-
-    color:#9CA3AF;
-
-    border:2px dashed #E5E7EB;
-
-    border-radius:18px;
+    padding-right: 4px;
 
 }
 
