@@ -40,7 +40,7 @@ document.getElementById("employeeDepartment").textContent =
 const today = new Date();
 
 document.getElementById("todayDate").textContent =
-    today.toLocaleDateString("ar-SA");
+    today.toLocaleDateString("ar-EG");
 
 /* ==========================
    Week Number
