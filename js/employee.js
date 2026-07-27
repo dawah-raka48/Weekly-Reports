@@ -251,7 +251,13 @@ async function loadReports(){
 
                     <br>
 
-                    ${report.uploadDate}
+                    ${new Date(report.uploadDate).toLocaleString("ar-SA",{
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit",
+    hour:"2-digit",
+    minute:"2-digit"
+})}
 
                 </div>
 
