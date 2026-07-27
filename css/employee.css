@@ -262,9 +262,11 @@ main{
 
     align-items:center;
 
-    padding:15px;
+    gap:12px;
 
     margin-bottom:12px;
+
+    padding:14px;
 
     border-radius:14px;
 
