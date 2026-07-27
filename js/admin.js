@@ -304,6 +304,8 @@ async function reportsPage(){
 
                     <th>عرض</th>
 
+                    <th>حذف</th>
+
                 </tr>
 
             </thead>
