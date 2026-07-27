@@ -284,3 +284,14 @@ async function loadReports(){
     document.getElementById("reportsTable").innerHTML = html;
 
 }
+document.getElementById("logoutBtn").addEventListener("click", () => {
+
+    if(confirm("هل تريد تسجيل الخروج؟")){
+
+        localStorage.removeItem("currentUser");
+
+        location.href = "index.html";
+
+    }
+
+});
