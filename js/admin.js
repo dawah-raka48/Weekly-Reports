@@ -206,7 +206,7 @@ async function reportsPage(){
 
         <tr>
 
-            <td colspan="6">
+            <td colspan="7">
 
                 لا توجد تقارير
 
@@ -248,33 +248,33 @@ async function reportsPage(){
 
                 <td>
 
-    <a
+                    <a
 
-        href="${report.url}"
+                        href="${report.url}"
 
-        target="_blank"
+                        target="_blank"
 
-        class="view-btn">
+                        class="view-btn">
 
-        عرض
+                        عرض
 
-    </a>
+                    </a>
 
-</td>
+                </td>
 
-<td>
+                <td>
 
-    <button
+                    <button
 
-        class="delete-btn"
+                        class="delete-btn"
 
-        onclick="deleteReport(${report.id})">
+                        onclick="deleteReport(${report.id})">
 
-        حذف
+                        حذف
 
-    </button>
+                    </button>
 
-</td>
+                </td>
 
             </tr>
 
@@ -283,7 +283,7 @@ async function reportsPage(){
         });
 
     }
-    setupReportsFilter(result.reports);
+
     content.innerHTML = `
 
     <div class="section-title">
@@ -298,34 +298,34 @@ async function reportsPage(){
 
     </div>
 
-<div class="filters">
+    <div class="filters">
 
-    <input
-        type="text"
-        id="searchName"
-        placeholder="🔍 البحث باسم الموظف">
+        <input
+            type="text"
+            id="searchName"
+            placeholder="🔍 البحث باسم الموظف">
 
-    <select id="searchDepartment">
+        <select id="searchDepartment">
 
-        <option value="">كل الأقسام</option>
+            <option value="">كل الأقسام</option>
 
-        <option>الإدارة</option>
+            <option>الإدارة</option>
 
-        <option>الدعوة</option>
+            <option>الدعوة</option>
 
-        <option>الإعلام</option>
+            <option>الإعلام</option>
 
-        <option>المالية</option>
+            <option>المالية</option>
 
-        <option>المتابعة</option>
+            <option>المتابعة</option>
 
-    </select>
+        </select>
 
-    <input
-        type="date"
-        id="searchDate">
+        <input
+            type="date"
+            id="searchDate">
 
-</div>
+    </div>
 
     <div class="table-container">
 
@@ -364,6 +364,8 @@ async function reportsPage(){
     </div>
 
     `;
+
+    setupReportsFilter(result.reports);
 
 }
 
