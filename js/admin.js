@@ -248,19 +248,33 @@ async function reportsPage(){
 
                 <td>
 
-                    <a
+    <a
 
-                        href="${report.url}"
+        href="${report.url}"
 
-                        target="_blank"
+        target="_blank"
 
-                        class="view-btn">
+        class="view-btn">
 
-                        عرض
+        عرض
 
-                    </a>
+    </a>
 
-                </td>
+</td>
+
+<td>
+
+    <button
+
+        class="delete-btn"
+
+        onclick="deleteReport(${report.id})">
+
+        حذف
+
+    </button>
+
+</td>
 
             </tr>
 
