@@ -123,6 +123,7 @@ function getMonthWeek(date){
 }
 weekNumber.textContent =
 getMonthWeek(today);
+weekNumber.textContent = getMonthWeek(today);
 /* ==========================
    Logout
 ========================== */
