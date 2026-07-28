@@ -87,29 +87,40 @@ today.toLocaleDateString("ar-EG");
    Week Number
 ========================== */
 
-function getWeekNumber(date){
+function getMonthWeek(date){
 
-    const firstDay =
-    new Date(date.getFullYear(),0,1);
+    const months = [
 
-    const days =
-    Math.floor(
+        "يناير",
+        "فبراير",
+        "مارس",
+        "أبريل",
+        "مايو",
+        "يونيو",
+        "يوليو",
+        "أغسطس",
+        "سبتمبر",
+        "أكتوبر",
+        "نوفمبر",
+        "ديسمبر"
 
-        (date-firstDay)/86400000
+    ];
 
-    );
+    const weekNames = [
 
-    return Math.ceil(
+        "الأول",
+        "الثاني",
+        "الثالث",
+        "الرابع",
+        "الخامس"
 
-        (days+firstDay.getDay()+1)/7
+    ];
 
-    );
+    const week = Math.ceil(date.getDate() / 7);
+
+    return `الأسبوع ${weekNames[week - 1]} - ${months[date.getMonth()]}`;
 
 }
-
-weekNumber.textContent =
-"الأسبوع " +
-getWeekNumber(today);
 
 /* ==========================
    Logout
