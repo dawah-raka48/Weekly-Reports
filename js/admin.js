@@ -298,6 +298,35 @@ async function reportsPage(){
 
     </div>
 
+<div class="filters">
+
+    <input
+        type="text"
+        id="searchName"
+        placeholder="🔍 البحث باسم الموظف">
+
+    <select id="searchDepartment">
+
+        <option value="">كل الأقسام</option>
+
+        <option>الإدارة</option>
+
+        <option>الدعوة</option>
+
+        <option>الإعلام</option>
+
+        <option>المالية</option>
+
+        <option>المتابعة</option>
+
+    </select>
+
+    <input
+        type="date"
+        id="searchDate">
+
+</div>
+
     <div class="table-container">
 
         <table>
