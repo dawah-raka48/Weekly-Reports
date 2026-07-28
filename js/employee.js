@@ -121,7 +121,8 @@ function getMonthWeek(date){
     return `الأسبوع ${weekNames[week - 1]} - ${months[date.getMonth()]}`;
 
 }
-
+weekNumber.textContent =
+getMonthWeek(today);
 /* ==========================
    Logout
 ========================== */
