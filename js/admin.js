@@ -611,3 +611,32 @@ async function deleteEmployee(id){
     }
 
 }
+/* ==========================
+   Delete Report
+========================== */
+
+async function deleteReport(id){
+
+    const ok = confirm("هل تريد حذف هذا التقرير؟");
+
+    if(!ok) return;
+
+    const result = await api("deleteReport",{
+
+        id
+
+    });
+
+    if(result.success){
+
+        alert("تم حذف التقرير");
+
+        reportsPage();
+
+    }else{
+
+        alert(result.message);
+
+    }
+
+}
