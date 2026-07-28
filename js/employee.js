@@ -405,26 +405,13 @@ const notice = document.getElementById("uploadNotice");
 
 notice.style.display = "block";
 
-notice.innerHTML = `
-
-<i class="fa-solid fa-lock"></i>
-
-رفع التقارير غير متاح حالياً.
-
-<br><br>
-
-📅 اليوم المسموح:
-
-<b>${dayNames[settings.uploadDay]}</b>
-
-<br>
-
-🕓 من
-
-<b>${formatTime(settings.startTime)}</b>
-
-إلى
-
-<b>${formatTime(settings.endTime)}</b>
-
-`;
+notice.innerHTML =
+    '<i class="fa-solid fa-lock"></i>' +
+    '<br><br>' +
+    '<strong>رفع التقارير غير متاح حالياً</strong>' +
+    '<br><br>' +
+    '📅 اليوم المسموح: <b>' + dayNames[settings.uploadDay] + '</b>' +
+    '<br>' +
+    '🕓 من <b>' + formatTime(settings.startTime) + '</b>' +
+    '<br>' +
+    'إلى <b>' + formatTime(settings.endTime) + '</b>';
