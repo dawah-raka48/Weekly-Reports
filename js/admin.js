@@ -283,7 +283,7 @@ async function reportsPage(){
         });
 
     }
-
+    setupReportsFilter(result.reports);
     content.innerHTML = `
 
     <div class="section-title">
@@ -667,5 +667,64 @@ async function deleteReport(id){
         alert(result.message);
 
     }
+
+}
+/* ==========================
+   Reports Filter
+========================== */
+
+function setupReportsFilter(reports){
+
+    const nameInput = document.getElementById("searchName");
+
+    const departmentInput = document.getElementById("searchDepartment");
+
+    const dateInput = document.getElementById("searchDate");
+
+    function filter(){
+
+        const name = nameInput.value.trim();
+
+        const department = departmentInput.value;
+
+        const date = dateInput.value;
+
+        const rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach((row,index)=>{
+
+            const report = reports[index];
+
+            let show = true;
+
+            if(name){
+
+                show = report.employeeName.includes(name);
+
+            }
+
+            if(show && department){
+
+                show = report.department === department;
+
+            }
+
+            if(show && date){
+
+                show = report.uploadDate.startsWith(date);
+
+            }
+
+            row.style.display = show ? "" : "none";
+
+        });
+
+    }
+
+    nameInput.addEventListener("input",filter);
+
+    departmentInput.addEventListener("change",filter);
+
+    dateInput.addEventListener("change",filter);
 
 }
