@@ -373,71 +373,104 @@ async function reportsPage(){
    Settings
 ========================== */
 
-function settingsPage(){
+async function settingsPage(){
 
-content.innerHTML=`
+    const result = await api("getSettings");
 
-<div class="section-title">
+    const settings = result.settings;
 
-<h2>
+    content.innerHTML = `
 
-<i class="fa-solid fa-gear"></i>
+    <div class="section-title">
 
-الإعدادات
+        <h2>
 
-</h2>
+            <i class="fa-solid fa-gear"></i>
 
-</div>
+            الإعدادات
 
-<div class="settings-grid">
+        </h2>
 
-<div class="setting-card">
+    </div>
 
-<label>
+    <div class="settings-grid">
 
-يوم رفع التقارير
+        <div class="setting-card">
 
-</label>
+            <label>
 
-<select>
+                يوم رفع التقارير
 
-<option>
+            </label>
 
-الخميس
+            <select id="uploadDay">
 
-</option>
+                <option value="Thursday">الخميس</option>
 
-</select>
+                <option value="Friday">الجمعة</option>
 
-</div>
+                <option value="Saturday">السبت</option>
 
-<div class="setting-card">
+            </select>
 
-<label>
+        </div>
 
-وقت البداية
+        <div class="setting-card">
 
-</label>
+            <label>
 
-<input type="time">
+                وقت البداية
 
-</div>
+            </label>
 
-<div class="setting-card">
+            <input
+                id="startTime"
+                type="time">
 
-<label>
+        </div>
 
-وقت النهاية
+        <div class="setting-card">
 
-</label>
+            <label>
 
-<input type="time">
+                وقت النهاية
 
-</div>
+            </label>
 
-</div>
+            <input
+                id="endTime"
+                type="time">
 
-`;
+        </div>
+
+    </div>
+
+    <br>
+
+    <button
+        id="saveSettingsBtn"
+        class="primary-btn">
+
+        <i class="fa-solid fa-floppy-disk"></i>
+
+        حفظ الإعدادات
+
+    </button>
+
+    `;
+
+    document.getElementById("uploadDay").value =
+        settings.uploadDay;
+
+    document.getElementById("startTime").value =
+        settings.startTime;
+
+    document.getElementById("endTime").value =
+        settings.endTime;
+
+    document
+        .getElementById("saveSettingsBtn")
+        .addEventListener("click",saveSettings);
 
 }
 
@@ -741,5 +774,41 @@ if(show && date){
     departmentInput.addEventListener("change", filter);
 
     dateInput.addEventListener("change", filter);
+
+}
+/* ==========================
+   Save Settings
+========================== */
+
+async function saveSettings(){
+
+    const uploadDay =
+        document.getElementById("uploadDay").value;
+
+    const startTime =
+        document.getElementById("startTime").value;
+
+    const endTime =
+        document.getElementById("endTime").value;
+
+    const result = await api("saveSettings",{
+
+        uploadDay,
+
+        startTime,
+
+        endTime
+
+    });
+
+    if(result.success){
+
+        alert("تم حفظ الإعدادات بنجاح");
+
+    }else{
+
+        alert(result.message);
+
+    }
 
 }
