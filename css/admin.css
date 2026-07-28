@@ -734,3 +734,44 @@ tbody tr:hover{
     background:#4338CA;
 
 }
+.filters{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-bottom:20px;
+
+    flex-wrap:wrap;
+
+}
+
+.filters input,
+
+.filters select{
+
+    flex:1;
+
+    min-width:180px;
+
+    padding:12px 14px;
+
+    border:1px solid #E5E7EB;
+
+    border-radius:12px;
+
+    font-family:inherit;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+.filters input:focus,
+
+.filters select:focus{
+
+    border-color:#4F46E5;
+
+}
