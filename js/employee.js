@@ -295,3 +295,84 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
     }
 
 });
+/* ==========================
+   Upload Permission
+========================== */
+
+checkUploadPermission();
+
+async function checkUploadPermission(){
+
+    const result = await api("getSettings");
+
+    if(!result.success) return;
+
+    const settings = result.settings;
+
+    const uploadBtn = document.getElementById("uploadBtn");
+
+    const today = new Date();
+
+    const days = [
+
+        "Sunday",
+
+        "Monday",
+
+        "Tuesday",
+
+        "Wednesday",
+
+        "Thursday",
+
+        "Friday",
+
+        "Saturday"
+
+    ];
+
+    const todayName = days[today.getDay()];
+
+    const now =
+
+        String(today.getHours()).padStart(2,"0") +
+
+        ":" +
+
+        String(today.getMinutes()).padStart(2,"0");
+
+    const allowed =
+
+        todayName === settings.uploadDay &&
+
+        now >= settings.startTime &&
+
+        now <= settings.endTime;
+
+    if(allowed) return;
+
+    uploadBtn.disabled = true;
+
+    uploadBtn.innerHTML = `
+
+        <i class="fa-solid fa-lock"></i>
+
+        رفع التقارير غير متاح
+
+    `;
+
+    alert(
+
+`رفع التقارير غير متاح حالياً.
+
+اليوم المسموح:
+
+${settings.uploadDay}
+
+من ${settings.startTime}
+
+إلى ${settings.endTime}`
+
+    );
+
+}
