@@ -357,26 +357,74 @@ async function checkUploadPermission(){
 
     uploadBtn.disabled = true;
 
-    uploadBtn.innerHTML = `
+uploadBtn.innerHTML = `
 
-        <i class="fa-solid fa-lock"></i>
+    <i class="fa-solid fa-lock"></i>
 
-        رفع التقارير غير متاح
+    رفع التقارير غير متاح
 
-    `;
+`;
 
-    alert(
+const dayNames = {
 
-`رفع التقارير غير متاح حالياً.
+    Sunday:"الأحد",
 
-اليوم المسموح:
+    Monday:"الإثنين",
 
-${settings.uploadDay}
+    Tuesday:"الثلاثاء",
 
-من ${settings.startTime}
+    Wednesday:"الأربعاء",
 
-إلى ${settings.endTime}`
+    Thursday:"الخميس",
 
-    );
+    Friday:"الجمعة",
+
+    Saturday:"السبت"
+
+};
+
+function formatTime(time){
+
+    const parts = String(time).split(":");
+
+    let hour = parseInt(parts[0]);
+
+    const minute = parts[1];
+
+    const period = hour >= 12 ? "مساءً" : "صباحاً";
+
+    hour = hour % 12;
+
+    if(hour === 0) hour = 12;
+
+    return String(hour).padStart(2,"0") + ":" + minute + " " + period;
 
 }
+
+const notice = document.getElementById("uploadNotice");
+
+notice.style.display = "block";
+
+notice.innerHTML = `
+
+<i class="fa-solid fa-lock"></i>
+
+رفع التقارير غير متاح حالياً.
+
+<br><br>
+
+📅 اليوم المسموح:
+
+<b>${dayNames[settings.uploadDay]}</b>
+
+<br>
+
+🕓 من
+
+<b>${formatTime(settings.startTime)}</b>
+
+إلى
+
+<b>${formatTime(settings.endTime)}</b>
+
+`;
