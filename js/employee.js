@@ -324,17 +324,13 @@ checkUploadPermission();
 
 async function checkUploadPermission(){
 
-    const result = await api(
-
-        "getSettings"
-
-    );
+    const result = await api("getSettings");
 
     if(!result.success) return;
 
     const settings = result.settings;
 
-    const days={
+    const dayNames = {
 
         Sunday:"الأحد",
 
@@ -352,9 +348,27 @@ async function checkUploadPermission(){
 
     };
 
-    const now=new Date();
+    function formatTime(time){
 
-    const todayName=[
+        let parts = String(time).split(":");
+
+        let hour = parseInt(parts[0]);
+
+        let minute = parts[1];
+
+        const period = hour >= 12 ? "م" : "ص";
+
+        hour = hour % 12;
+
+        if(hour === 0) hour = 12;
+
+        return `${String(hour).padStart(2,"0")}:${minute} ${period}`;
+
+    }
+
+    const now = new Date();
+
+    const todayName = [
 
         "Sunday",
 
@@ -372,77 +386,95 @@ async function checkUploadPermission(){
 
     ][now.getDay()];
 
-    const currentTime=
+    const currentTime =
 
-        String(now.getHours())
+        String(now.getHours()).padStart(2,"0") +
 
-        .padStart(2,"0")
+        ":" +
 
-        +":"
+        String(now.getMinutes()).padStart(2,"0");
 
-        +String(now.getMinutes())
+    const start = String(settings.startTime).substring(0,5);
 
-        .padStart(2,"0");
+    const end = String(settings.endTime).substring(0,5);
 
-    const start=
+    const allowed =
 
-        String(settings.startTime)
+        todayName === settings.uploadDay &&
 
-        .substring(0,5);
+        currentTime >= start &&
 
-    const end=
-
-        String(settings.endTime)
-
-        .substring(0,5);
-
-    const allowed=
-
-        todayName===settings.uploadDay &&
-
-        currentTime>=start &&
-
-        currentTime<=end;
+        currentTime <= end;
 
     if(allowed){
 
-        uploadNotice.style.display="none";
+        uploadNotice.style.display = "none";
 
         return;
 
     }
 
-    uploadBtn.disabled=true;
+    uploadBtn.disabled = true;
 
-    uploadBtn.innerHTML=
+    uploadBtn.innerHTML =
 
     '<i class="fa-solid fa-lock"></i> رفع التقارير غير متاح';
 
-    uploadNotice.style.display="block";
+    uploadNotice.style.display = "block";
 
-    uploadNotice.innerHTML=
+    uploadNotice.innerHTML = `
 
-    '<i class="fa-solid fa-lock"></i><br><br>'+
+        <h3>
 
-    '<strong>رفع التقارير غير متاح حالياً</strong><br><br>'+
+            <i class="fa-solid fa-lock"></i>
 
-    '📅 اليوم المسموح : <b>'+
+            رفع التقارير مغلق حالياً
 
-    days[settings.uploadDay]+
+        </h3>
 
-    '</b><br>'+
+        <div class="notice-row">
 
-    '🕓 من <b>'+
+            <span class="notice-label">
 
-    start+
+                📅 يوم الرفع
 
-    '</b><br>'+
+            </span>
 
-    'إلى <b>'+
+            <span class="notice-value">
 
-    end+
+                ${dayNames[settings.uploadDay]}
 
-    '</b>';
+            </span>
+
+        </div>
+
+        <div class="notice-row">
+
+            <span class="notice-label">
+
+                🕓 وقت الرفع
+
+            </span>
+
+            <span class="notice-value">
+
+                ${formatTime(start)}
+
+                &nbsp;→&nbsp;
+
+                ${formatTime(end)}
+
+            </span>
+
+        </div>
+
+        <div class="notice-footer">
+
+            سيتم تفعيل رفع التقارير تلقائياً عند بداية الموعد المحدد.
+
+        </div>
+
+    `;
 
 }
 /* ==========================
