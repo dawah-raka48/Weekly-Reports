@@ -3,6 +3,10 @@
    Employee Page
 ========================================== */
 
+/* ==========================
+   Current User
+========================== */
+
 const currentUser = JSON.parse(
     localStorage.getItem("currentUser")
 );
@@ -24,58 +28,122 @@ if (currentUser.role !== "employee") {
 }
 
 /* ==========================
-   Employee Info
+   Elements
 ========================== */
 
-document.getElementById("employeeName").textContent =
-    currentUser.name;
+const employeeName =
+document.getElementById("employeeName");
 
-document.getElementById("employeeDepartment").textContent =
-    currentUser.department;
+const employeeDepartment =
+document.getElementById("employeeDepartment");
 
-/* ==========================
-   Date
-========================== */
+const todayDate =
+document.getElementById("todayDate");
 
-const today = new Date();
-
-document.getElementById("todayDate").textContent =
-    today.toLocaleDateString("ar-EG");
-
-/* ==========================
-   Week Number
-========================== */
-
-function getWeekNumber(date) {
-
-    const firstDay = new Date(date.getFullYear(),0,1);
-
-    const days = Math.floor(
-
-        (date-firstDay) / 86400000
-
-    );
-
-    return Math.ceil(
-
-        (days + firstDay.getDay() + 1) / 7
-
-    );
-
-}
-
-document.getElementById("weekNumber").textContent =
-"الأسبوع " + getWeekNumber(today);
-
-/* ==========================
-   File Picker
-========================== */
+const weekNumber =
+document.getElementById("weekNumber");
 
 const pdfFile =
 document.getElementById("pdfFile");
 
 const selectedFile =
 document.getElementById("selectedFile");
+
+const uploadBtn =
+document.getElementById("uploadBtn");
+
+const uploadText =
+document.getElementById("uploadText");
+
+const reportsTable =
+document.getElementById("reportsTable");
+
+const uploadNotice =
+document.getElementById("uploadNotice");
+
+const logoutBtn =
+document.getElementById("logoutBtn");
+
+/* ==========================
+   Employee Information
+========================== */
+
+employeeName.textContent =
+currentUser.name;
+
+employeeDepartment.textContent =
+currentUser.department;
+
+/* ==========================
+   Today Date
+========================== */
+
+const today = new Date();
+
+todayDate.textContent =
+today.toLocaleDateString("ar-EG");
+
+/* ==========================
+   Week Number
+========================== */
+
+function getWeekNumber(date){
+
+    const firstDay =
+    new Date(date.getFullYear(),0,1);
+
+    const days =
+    Math.floor(
+
+        (date-firstDay)/86400000
+
+    );
+
+    return Math.ceil(
+
+        (days+firstDay.getDay()+1)/7
+
+    );
+
+}
+
+weekNumber.textContent =
+"الأسبوع " +
+getWeekNumber(today);
+
+/* ==========================
+   Logout
+========================== */
+
+logoutBtn.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        if(
+
+            confirm("هل تريد تسجيل الخروج؟")
+
+        ){
+
+            localStorage.removeItem(
+
+                "currentUser"
+
+            );
+
+            location.href="index.html";
+
+        }
+
+    }
+
+);
+
+/* ==========================
+   File Picker
+========================== */
 
 pdfFile.addEventListener(
 
@@ -85,7 +153,7 @@ pdfFile.addEventListener(
 
         if(!pdfFile.files.length){
 
-            selectedFile.innerHTML=
+            selectedFile.innerHTML =
 
             "لم يتم اختيار أي ملف";
 
@@ -93,11 +161,21 @@ pdfFile.addEventListener(
 
         }
 
-        const file=pdfFile.files[0];
+        const file =
+        pdfFile.files[0];
 
-        if(file.type!=="application/pdf"){
+        if(
 
-            alert("يسمح فقط بملفات PDF");
+            file.type !==
+            "application/pdf"
+
+        ){
+
+            alert(
+
+                "يسمح فقط بملفات PDF"
+
+            );
 
             pdfFile.value="";
 
@@ -111,25 +189,34 @@ pdfFile.addEventListener(
 
         selectedFile.innerHTML=
 
-        file.name+
+            file.name+
 
-        "<br>"+
+            "<br>"+
 
-        (file.size/1024/1024).toFixed(2)+
+            (file.size/1024/1024)
 
-        " MB";
+            .toFixed(2)+
+
+            " MB";
 
     }
 
 );
-const uploadBtn = document.getElementById("uploadBtn");
-const uploadText = document.getElementById("uploadText");
+/* ==========================
+   Upload Report
+========================== */
 
-uploadBtn.addEventListener("click", uploadReport);
+uploadBtn.addEventListener(
 
-async function uploadReport() {
+    "click",
 
-    if (!pdfFile.files.length) {
+    uploadReport
+
+);
+
+async function uploadReport(){
+
+    if(!pdfFile.files.length){
 
         alert("اختر ملف PDF أولاً");
 
@@ -139,162 +226,96 @@ async function uploadReport() {
 
     uploadBtn.disabled = true;
 
-    uploadText.innerHTML = `
-        <i class="fa-solid fa-spinner fa-spin"></i>
-        &nbsp;
-        جارٍ رفع التقرير...
-    `;
+    uploadText.innerHTML =
+
+    '<i class="fa-solid fa-spinner fa-spin"></i> جارٍ رفع التقرير...';
 
     const file = pdfFile.files[0];
 
     const reader = new FileReader();
 
-    reader.onload = async function () {
+    reader.onload = async ()=>{
 
-        const base64 = reader.result.split(",")[1];
+        const base64 =
 
-        const result = await api("uploadReport", {
+        reader.result.split(",")[1];
 
-            employeeId: currentUser.id,
+        const result = await api(
 
-            employeeName: currentUser.name,
+            "uploadReport",
 
-            department: currentUser.department,
+            {
 
-            week: getWeekNumber(new Date()),
+                employeeId:
 
-            fileName: file.name,
+                currentUser.id,
 
-            mimeType: file.type,
+                employeeName:
 
-            fileData: base64
+                currentUser.name,
 
-        });
+                department:
 
-        if (result.success) {
+                currentUser.department,
 
-            uploadText.innerHTML = `
-                <i class="fa-solid fa-circle-check"></i>
-                تم رفع التقرير
-            `;
+                week:
 
-            setTimeout(() => {
+                getWeekNumber(
 
-                uploadBtn.disabled = false;
+                    new Date()
 
-                uploadText.innerHTML = `
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                    رفع التقرير
-                `;
+                ),
 
-                pdfFile.value = "";
+                fileName:
 
-                selectedFile.innerHTML = "لم يتم اختيار أي ملف";
+                file.name,
 
-            }, 2000);
+                mimeType:
 
-        } else {
+                file.type,
 
-            uploadBtn.disabled = false;
+                fileData:
 
-            uploadText.innerHTML = `
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                رفع التقرير
-            `;
+                base64
+
+            }
+
+        );
+
+        if(result.success){
+
+            uploadText.innerHTML =
+
+            '<i class="fa-solid fa-circle-check"></i> تم رفع التقرير';
+
+            pdfFile.value="";
+
+            selectedFile.innerHTML=
+
+            "لم يتم اختيار أي ملف";
+
+            loadReports();
+
+        }
+
+        else{
 
             alert(result.message);
 
         }
+
+        uploadBtn.disabled=false;
+
+        uploadText.innerHTML=
+
+        '<i class="fa-solid fa-cloud-arrow-up"></i> رفع التقرير';
 
     };
 
     reader.readAsDataURL(file);
 
 }
-loadReports();
 
-async function loadReports(){
-
-    const result = await api("getReports",{
-
-        employeeId: currentUser.id
-
-    });
-    console.log(result);
-    if(!result.success) return;
-
-    let html = "";
-
-    if(result.reports.length===0){
-
-        html = `
-        <div class="empty">
-            لا توجد تقارير حتى الآن
-        </div>
-        `;
-
-    }else{
-
-        result.reports.forEach(report=>{
-
-            html += `
-
-            <div class="report-item">
-
-                <div>
-
-                    <strong>
-
-                        الأسبوع ${report.week}
-
-                    </strong>
-
-                    <br>
-
-                    ${new Date(report.uploadDate).toLocaleString("ar-SA",{
-    year:"numeric",
-    month:"2-digit",
-    day:"2-digit",
-    hour:"2-digit",
-    minute:"2-digit"
-})}
-
-                </div>
-
-                <a
-
-                    href="${report.url}"
-
-                    target="_blank"
-
-                    class="view-btn">
-
-                    عرض
-
-                </a>
-
-            </div>
-
-            `;
-
-        });
-
-    }
-
-    document.getElementById("reportsTable").innerHTML = html;
-
-}
-document.getElementById("logoutBtn").addEventListener("click", () => {
-
-    if(confirm("هل تريد تسجيل الخروج؟")){
-
-        localStorage.removeItem("currentUser");
-
-        location.href = "index.html";
-
-    }
-
-});
 /* ==========================
    Upload Permission
 ========================== */
@@ -303,21 +324,37 @@ checkUploadPermission();
 
 async function checkUploadPermission(){
 
-    const result = await api("getSettings");
+    const result = await api(
+
+        "getSettings"
+
+    );
 
     if(!result.success) return;
 
     const settings = result.settings;
 
-    console.log(settings);
-    console.log("اليوم الحالي:", todayName);
-    console.log("الوقت الحالي:", now);
+    const days={
 
-    const uploadBtn = document.getElementById("uploadBtn");
+        Sunday:"الأحد",
 
-    const today = new Date();
+        Monday:"الإثنين",
 
-    const days = [
+        Tuesday:"الثلاثاء",
+
+        Wednesday:"الأربعاء",
+
+        Thursday:"الخميس",
+
+        Friday:"الجمعة",
+
+        Saturday:"السبت"
+
+    };
+
+    const now=new Date();
+
+    const todayName=[
 
         "Sunday",
 
@@ -333,85 +370,191 @@ async function checkUploadPermission(){
 
         "Saturday"
 
-    ];
+    ][now.getDay()];
 
-    const todayName = days[today.getDay()];
+    const currentTime=
 
-    const now =
+        String(now.getHours())
 
-        String(today.getHours()).padStart(2,"0") +
+        .padStart(2,"0")
 
-        ":" +
+        +":"
 
-        String(today.getMinutes()).padStart(2,"0");
+        +String(now.getMinutes())
 
-    const allowed =
+        .padStart(2,"0");
 
-        todayName === settings.uploadDay &&
+    const start=
 
-        now >= settings.startTime &&
+        String(settings.startTime)
 
-        now <= settings.endTime;
+        .substring(0,5);
 
-    if(allowed) return;
+    const end=
 
-    uploadBtn.disabled = true;
+        String(settings.endTime)
 
-uploadBtn.innerHTML = `
+        .substring(0,5);
 
-    <i class="fa-solid fa-lock"></i>
+    const allowed=
 
-    رفع التقارير غير متاح
+        todayName===settings.uploadDay &&
 
-`;
+        currentTime>=start &&
 
-const dayNames = {
+        currentTime<=end;
 
-    Sunday:"الأحد",
+    if(allowed){
 
-    Monday:"الإثنين",
+        uploadNotice.style.display="none";
 
-    Tuesday:"الثلاثاء",
+        return;
 
-    Wednesday:"الأربعاء",
+    }
 
-    Thursday:"الخميس",
+    uploadBtn.disabled=true;
 
-    Friday:"الجمعة",
+    uploadBtn.innerHTML=
 
-    Saturday:"السبت"
+    '<i class="fa-solid fa-lock"></i> رفع التقارير غير متاح';
 
-};
+    uploadNotice.style.display="block";
 
-function formatTime(time){
+    uploadNotice.innerHTML=
 
-    const parts = String(time).split(":");
+    '<i class="fa-solid fa-lock"></i><br><br>'+
 
-    let hour = parseInt(parts[0]);
+    '<strong>رفع التقارير غير متاح حالياً</strong><br><br>'+
 
-    const minute = parts[1];
+    '📅 اليوم المسموح : <b>'+
 
-    const period = hour >= 12 ? "مساءً" : "صباحاً";
+    days[settings.uploadDay]+
 
-    hour = hour % 12;
+    '</b><br>'+
 
-    if(hour === 0) hour = 12;
+    '🕓 من <b>'+
 
-    return String(hour).padStart(2,"0") + ":" + minute + " " + period;
+    start+
+
+    '</b><br>'+
+
+    'إلى <b>'+
+
+    end+
+
+    '</b>';
 
 }
+/* ==========================
+   Previous Reports
+========================== */
 
-const notice = document.getElementById("uploadNotice");
+loadReports();
 
-notice.style.display = "block";
+async function loadReports(){
 
-notice.innerHTML =
-    '<i class="fa-solid fa-lock"></i>' +
-    '<br><br>' +
-    '<strong>رفع التقارير غير متاح حالياً</strong>' +
-    '<br><br>' +
-    '📅 اليوم المسموح: <b>' + dayNames[settings.uploadDay] + '</b>' +
-    '<br>' +
-    '🕓 من <b>' + formatTime(settings.startTime) + '</b>' +
-    '<br>' +
-    'إلى <b>' + formatTime(settings.endTime) + '</b>';
+    const result = await api(
+
+        "getReports",
+
+        {
+
+            employeeId:
+
+            currentUser.id
+
+        }
+
+    );
+
+    if(!result.success){
+
+        reportsTable.innerHTML=
+
+        '<div class="empty">تعذر تحميل التقارير</div>';
+
+        return;
+
+    }
+
+    if(result.reports.length===0){
+
+        reportsTable.innerHTML=
+
+        '<div class="empty">لا توجد تقارير حتى الآن</div>';
+
+        return;
+
+    }
+
+    let html="";
+
+    result.reports.forEach(report=>{
+
+        const date = new Date(report.uploadDate);
+
+        const reportDate =
+
+        date.toLocaleString(
+
+            "ar-EG",
+
+            {
+
+                year:"numeric",
+
+                month:"2-digit",
+
+                day:"2-digit",
+
+                hour:"2-digit",
+
+                minute:"2-digit",
+
+                hour12:true
+
+            }
+
+        );
+
+        html+=`
+
+        <div class="report-item">
+
+            <div>
+
+                <strong>
+
+                    الأسبوع ${report.week}
+
+                </strong>
+
+                <br>
+
+                ${reportDate}
+
+            </div>
+
+            <a
+
+                href="${report.url}"
+
+                target="_blank"
+
+                class="view-btn">
+
+                عرض
+
+            </a>
+
+        </div>
+
+        `;
+
+    });
+
+    reportsTable.innerHTML=
+
+    html;
+
+}
