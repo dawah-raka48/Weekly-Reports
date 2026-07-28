@@ -273,7 +273,7 @@ async function uploadReport(){
 
                 week:
 
-                getWeekNumber(
+                getMonthWeek(
 
                     new Date()
 
