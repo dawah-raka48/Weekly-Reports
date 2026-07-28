@@ -309,6 +309,10 @@ async function checkUploadPermission(){
 
     const settings = result.settings;
 
+    console.log(settings);
+    console.log("اليوم الحالي:", todayName);
+    console.log("الوقت الحالي:", now);
+
     const uploadBtn = document.getElementById("uploadBtn");
 
     const today = new Date();
