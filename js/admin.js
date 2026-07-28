@@ -678,17 +678,13 @@ async function deleteReport(id){
 function setupReportsFilter(reports){
 
     const nameInput = document.getElementById("searchName");
-
     const departmentInput = document.getElementById("searchDepartment");
-
     const dateInput = document.getElementById("searchDate");
 
     function filter(){
 
-        const name = nameInput.value.trim();
-
+        const name = nameInput.value.trim().toLowerCase();
         const department = departmentInput.value;
-
         const date = dateInput.value;
 
         const rows = document.querySelectorAll("tbody tr");
@@ -697,23 +693,32 @@ function setupReportsFilter(reports){
 
             const report = reports[index];
 
+            if(!report) return;
+
             let show = true;
 
+            // فلترة الاسم
             if(name){
 
-                show = report.employeeName.includes(name);
+                show = report.employeeName
+                    .toLowerCase()
+                    .includes(name);
 
             }
 
+            // فلترة القسم
             if(show && department){
 
                 show = report.department === department;
 
             }
 
+            // فلترة التاريخ
             if(show && date){
 
-                show = report.uploadDate.startsWith(date);
+                const reportDate = report.uploadDate.substring(0,10);
+
+                show = reportDate === date;
 
             }
 
@@ -723,10 +728,10 @@ function setupReportsFilter(reports){
 
     }
 
-    nameInput.addEventListener("input",filter);
+    nameInput.addEventListener("input", filter);
 
-    departmentInput.addEventListener("change",filter);
+    departmentInput.addEventListener("change", filter);
 
-    dateInput.addEventListener("change",filter);
+    dateInput.addEventListener("change", filter);
 
 }
