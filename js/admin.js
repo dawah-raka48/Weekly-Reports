@@ -714,13 +714,21 @@ function setupReportsFilter(reports){
             }
 
             // فلترة التاريخ
-            if(show && date){
+if(show && date){
 
-                const reportDate = report.uploadDate.substring(0,10);
+    const d = new Date(report.uploadDate);
 
-                show = reportDate === date;
+    const reportDate =
 
-            }
+        d.getFullYear() + "-" +
+
+        String(d.getMonth() + 1).padStart(2,"0") + "-" +
+
+        String(d.getDate()).padStart(2,"0");
+
+    show = reportDate === date;
+
+}
 
             row.style.display = show ? "" : "none";
 
