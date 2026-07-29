@@ -20,87 +20,29 @@ body{
 
     align-items:center;
 
-    padding:20px;
-
     overflow:hidden;
 
     background:
 
     linear-gradient(
 
-        135deg,
+        rgba(15,23,42,.35),
 
-        #18213D 0%,
+        rgba(15,23,42,.35)
 
-        #3E46A8 55%,
+    ),
 
-        #5C5FD6 100%
+    url("../assets/login-bg.jpg");
 
-    );
+    background-size:cover;
 
-}
-/* ==========================
-   Animated Background
-========================== */
+    background-position:center;
 
-body::before {
+    background-repeat:no-repeat;
 
-    content: "";
-
-    position: fixed;
-
-    inset: 0;
-
-    background:
-
-        radial-gradient(circle at 15% 20%,
-            rgba(255,255,255,.22),
-            transparent 30%),
-
-        radial-gradient(circle at 85% 15%,
-            rgba(255,255,255,.18),
-            transparent 25%),
-
-        radial-gradient(circle at 50% 90%,
-            rgba(255,255,255,.15),
-            transparent 35%);
-
-    animation: float 12s ease-in-out infinite;
-
-    z-index: -2;
+    background-attachment:fixed;
 
 }
-
-/* ==========================
-   Floating Blur
-========================== */
-
-body::after {
-
-    content: "";
-
-    position: fixed;
-
-    width: 650px;
-
-    height: 650px;
-
-    border-radius: 50%;
-
-    background: rgba(255,255,255,.15);
-
-    filter: blur(120px);
-
-    top: -180px;
-
-    left: -180px;
-
-    animation: float 8s ease-in-out infinite;
-
-    z-index: -1;
-
-}
-
 /* ==========================
    Login Wrapper
 ========================== */
