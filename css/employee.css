@@ -96,7 +96,9 @@ main{
 
     grid-template-columns:1fr 1fr;
 
-    gap:25px;
+    gap:24px;
+
+    margin-top:25px;
 
 }
 
@@ -413,5 +415,15 @@ main{
     color:#6B7280;
 
     font-size:14px;
+
+}
+.upload-notice{
+
+    grid-column:1 / -1;
+
+}
+.card{
+
+    height:100%;
 
 }
