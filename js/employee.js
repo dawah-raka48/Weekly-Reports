@@ -473,7 +473,7 @@ async function checkUploadPermission(){
 
                 ${formatTime(start)}
 
-                &nbsp;→&nbsp;
+                &nbsp;←&nbsp;
 
                 ${formatTime(end)}
 
