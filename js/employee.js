@@ -343,23 +343,23 @@ async function checkUploadPermission(){
 
     const settings = result.settings;
 
-    const dayNames = {
+const dayNames = {
 
-        Sunday:"الأحد",
+    0:"الأحد",
 
-        Monday:"الإثنين",
+    1:"الإثنين",
 
-        Tuesday:"الثلاثاء",
+    2:"الثلاثاء",
 
-        Wednesday:"الأربعاء",
+    3:"الأربعاء",
 
-        Thursday:"الخميس",
+    4:"الخميس",
 
-        Friday:"الجمعة",
+    5:"الجمعة",
 
-        Saturday:"السبت"
+    6:"السبت"
 
-    };
+};
 
     function formatTime(time){
 
@@ -381,23 +381,7 @@ async function checkUploadPermission(){
 
     const now = new Date();
 
-    const todayName = [
-
-        "Sunday",
-
-        "Monday",
-
-        "Tuesday",
-
-        "Wednesday",
-
-        "Thursday",
-
-        "Friday",
-
-        "Saturday"
-
-    ][now.getDay()];
+const todayName = String(now.getDay());
 
     const currentTime =
 
