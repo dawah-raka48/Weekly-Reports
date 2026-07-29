@@ -9,7 +9,35 @@ const loginText = document.getElementById("loginText");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
 
+/* ==========================
+   Events
+========================== */
+
 loginBtn.addEventListener("click", login);
+
+username.addEventListener("keydown", (e) => {
+
+    if (e.key === "Enter") {
+
+        login();
+
+    }
+
+});
+
+password.addEventListener("keydown", (e) => {
+
+    if (e.key === "Enter") {
+
+        login();
+
+    }
+
+});
+
+/* ==========================
+   Login
+========================== */
 
 async function login() {
 
@@ -24,14 +52,10 @@ async function login() {
     loginBtn.disabled = true;
 
     loginText.innerHTML = `
-
-<i class="fa-solid fa-spinner fa-spin"></i>
-
-&nbsp;
-
-جارٍ تسجيل الدخول...
-
-`;
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        &nbsp;
+        جارٍ تسجيل الدخول...
+    `;
 
     const result = await api("login", {
 
@@ -45,7 +69,7 @@ async function login() {
 
         loginBtn.disabled = false;
 
-        loginText.innerHTML = "تسجيل الدخول";
+        loginText.textContent = "تسجيل الدخول";
 
         alert(result.message);
 
