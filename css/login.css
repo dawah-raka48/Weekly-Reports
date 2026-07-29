@@ -7,25 +7,39 @@
    Body
 ========================== */
 
-body {
+body{
+
+    font-family:"Cairo",sans-serif;
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:30px;
 
     background:
-        linear-gradient(135deg,
-            #4F46E5 0%,
-            #6366F1 40%,
-            #7C3AED 100%);
 
-    min-height: 100vh;
+    linear-gradient(
 
-    display: flex;
+        135deg,
 
-    justify-content: center;
+        rgba(20,33,61,.82),
 
-    align-items: center;
+        rgba(55,48,163,.70)
 
-    overflow: hidden;
+    ),
 
-    position: relative;
+    url("../assets/login-bg.jpg");
+
+    background-size:cover;
+
+    background-position:center;
+
+    background-repeat:no-repeat;
 
 }
 
@@ -121,21 +135,23 @@ body::after {
 
     width:100%;
 
-    max-width:460px;
+    max-width:470px;
 
-    background:rgba(255,255,255,.12);
-
-    backdrop-filter:blur(18px);
-
-    border:1px solid rgba(255,255,255,.18);
+    padding:42px;
 
     border-radius:28px;
 
-    padding:38px;
+    background:rgba(17,24,39,.35);
+
+    backdrop-filter:blur(22px);
+
+    -webkit-backdrop-filter:blur(22px);
+
+    border:1px solid rgba(255,255,255,.10);
 
     box-shadow:
 
-    0 20px 60px rgba(0,0,0,.20);
+        0 25px 70px rgba(0,0,0,.35);
 
 }
 /* ==========================
