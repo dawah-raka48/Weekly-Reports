@@ -180,17 +180,15 @@ body::after {
    Titles
 ========================== */
 
-.login-title {
+.login-title{
 
-    text-align: center;
+    color:#FFFFFF;
 
-    font-size: 30px;
+    font-size:42px;
 
-    font-weight: 800;
+    font-weight:800;
 
-    color: white;
-
-    margin-bottom: 8px;
+    line-height:1.3;
 
 }
 
