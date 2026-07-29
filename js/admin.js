@@ -397,21 +397,25 @@ async function settingsPage(){
 
         <div class="setting-card">
 
-            <label>
+            <label>يوم رفع التقارير</label>
 
-                يوم رفع التقارير
+<select id="uploadDay">
 
-            </label>
+    <option value="0">الأحد</option>
 
-            <select id="uploadDay">
+    <option value="1">الإثنين</option>
 
-                <option value="Thursday">الخميس</option>
+    <option value="2">الثلاثاء</option>
 
-                <option value="Friday">الجمعة</option>
+    <option value="3">الأربعاء</option>
 
-                <option value="Saturday">السبت</option>
+    <option value="4">الخميس</option>
 
-            </select>
+    <option value="5">الجمعة</option>
+
+    <option value="6">السبت</option>
+
+</select>
 
         </div>
 
