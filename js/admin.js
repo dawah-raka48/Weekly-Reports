@@ -592,9 +592,8 @@ async function saveEmployee(){
 
     if(!name || !username || !password){
 
-        alert("يرجى إدخال جميع البيانات");
-
-        return;
+    await showWarning("يرجى إدخال جميع البيانات");
+    return;
 
     }
 
@@ -638,7 +637,7 @@ document.querySelector(".modal-title").textContent = "إضافة موظف";
 
         await employeesPage();
 
-        alert("تمت إضافة الموظف بنجاح");
+        await showSuccess("تمت إضافة الموظف بنجاح");
 
     }
 
@@ -668,9 +667,12 @@ function editEmployee(id){
 }
 async function deleteEmployee(id){
 
-    const ok = confirm("هل تريد حذف هذا الموظف؟");
+    const ok = await showConfirm(
+       "هل تريد حذف هذا الموظف؟",
+       "حذف موظف"
+    );
 
-    if(!ok) return;
+if(!ok) return;
 
     const result = await api("deleteEmployee",{
 
@@ -682,11 +684,11 @@ async function deleteEmployee(id){
 
         await employeesPage();
 
-        alert("تم حذف الموظف بنجاح");
+        await showSuccess("تم حذف الموظف بنجاح");
 
     }else{
 
-        alert(result.message);
+        await showError(result.message);
 
     }
 
@@ -697,9 +699,12 @@ async function deleteEmployee(id){
 
 async function deleteReport(id){
 
-    const ok = confirm("هل تريد حذف هذا التقرير؟");
+    const ok = await showConfirm(
+    "هل تريد حذف هذا التقرير؟",
+    "حذف تقرير"
+);
 
-    if(!ok) return;
+if(!ok) return;
 
     const result = await api("deleteReport",{
 
@@ -709,7 +714,7 @@ async function deleteReport(id){
 
     if(result.success){
 
-        alert("تم حذف التقرير");
+        await showSuccess("تم حذف التقرير بنجاح");
 
         reportsPage();
 
@@ -819,7 +824,7 @@ async function saveSettings(){
 
     if(result.success){
 
-        alert("تم حفظ الإعدادات بنجاح");
+        await showSuccess("تم حفظ الإعدادات بنجاح");
 
     }else{
 
@@ -838,9 +843,10 @@ if(logoutBtn){
 
     logoutBtn.addEventListener("click",()=>{
 
-        const ok = confirm("هل تريد تسجيل الخروج؟");
-
-        if(!ok) return;
+        const ok = await showConfirm(
+          "هل تريد تسجيل الخروج من النظام؟",
+          "تسجيل الخروج"
+);
 
         localStorage.removeItem("currentUser");
 
