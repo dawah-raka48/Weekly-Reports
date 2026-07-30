@@ -44,11 +44,13 @@
     <!-- Header -->
 
     <header class="employee-header">
-<button id="logoutBtn" class="logout-btn">
 
-    <i class="fa-solid fa-right-from-bracket"></i>
+        <button id="logoutBtn" class="logout-btn">
 
-</button>
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+        </button>
+
         <img src="assets/logo.png"
              class="logo"
              alt="Logo">
@@ -56,15 +58,11 @@
         <div class="employee-info">
 
             <h2 id="employeeName">
-
                 اسم الموظف
-
             </h2>
 
             <span id="employeeDepartment">
-
                 القسم
-
             </span>
 
         </div>
@@ -72,15 +70,11 @@
         <div class="employee-date">
 
             <div id="weekNumber">
-
                 الأسبوع --
-
             </div>
 
             <div id="todayDate">
-
                 --
-
             </div>
 
         </div>
@@ -90,15 +84,53 @@
     <!-- Content -->
 
     <main>
-    <div
-    id="uploadNotice"
-    class="upload-notice"
-    style="display:none;">
-</div>
-        
+
+        <div id="uploadNotice"
+             class="upload-notice"
+             style="display:none;">
+        </div>
+
+        <!-- Success Card -->
+
+        <section id="successCard"
+                 class="card success-card"
+                 style="display:none;">
+
+            <div class="success-icon">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+            <h2>
+
+                تم استلام تقريرك
+
+            </h2>
+
+            <p>
+
+                شكراً لك على الالتزام برفع التقرير الأسبوعي.
+
+            </p>
+
+            <p>
+
+                تم إرسال تقرير هذا الأسبوع إلى الإدارة بنجاح.
+
+            </p>
+
+            <small>
+
+                نراك في موعد رفع التقارير القادم.
+
+            </small>
+
+        </section>
+
         <!-- Upload -->
 
-        <section class="card">
+        <section id="uploadCard" class="card">
 
             <h3>
 
