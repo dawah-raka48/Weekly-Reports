@@ -273,3 +273,16 @@ function showConfirm(
     });
 
 }
+document.addEventListener("keydown",e=>{
+
+    if(e.key!=="Escape") return;
+
+    const dialog=document.querySelector(".dialog-overlay");
+
+    if(dialog){
+
+        Dialog.close(dialog);
+
+    }
+
+});
