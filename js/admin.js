@@ -313,7 +313,7 @@ async function reportsPage(){
 
                     <option>المالية</option>
 
-                    <option>الإعلام</option>
+                    <option>الإعلامية</option>
 
                     <option>قسم الدعوة</option>
                     
