@@ -309,15 +309,19 @@ async function reportsPage(){
 
             <option value="">كل الأقسام</option>
 
-            <option>الإدارة</option>
+                    <option>الإدارية</option>
 
-            <option>الدعوة</option>
+                    <option>المالية</option>
 
-            <option>الإعلام</option>
+                    <option>الإعلام</option>
 
-            <option>المالية</option>
+                    <option>قسم الدعوة</option>
+                    
+                    <option>الجاليات</option>
 
-            <option>المتابعة</option>
+                    <option>القسم النسائي</option>
+
+                    <option>مركز غيم</option>
 
         </select>
 
