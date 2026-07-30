@@ -61,6 +61,12 @@ document.getElementById("reportsTable");
 const uploadNotice =
 document.getElementById("uploadNotice");
 
+const successCard =
+document.getElementById("successCard");
+
+const uploadCard =
+document.getElementById("uploadCard");
+
 const logoutBtn =
 document.getElementById("logoutBtn");
 
@@ -121,9 +127,10 @@ function getMonthWeek(date){
     return `الأسبوع ${weekNames[week - 1]} - ${months[date.getMonth()]}`;
 
 }
+
 weekNumber.textContent =
 getMonthWeek(today);
-weekNumber.textContent = getMonthWeek(today);
+
 /* ==========================
    Logout
 ========================== */
@@ -134,17 +141,9 @@ logoutBtn.addEventListener(
 
     ()=>{
 
-        if(
+        if(confirm("هل تريد تسجيل الخروج؟")){
 
-            confirm("هل تريد تسجيل الخروج؟")
-
-        ){
-
-            localStorage.removeItem(
-
-                "currentUser"
-
-            );
+            localStorage.removeItem("currentUser");
 
             location.href="index.html";
 
@@ -174,27 +173,15 @@ pdfFile.addEventListener(
 
         }
 
-        const file =
-        pdfFile.files[0];
+        const file = pdfFile.files[0];
 
-        if(
+        if(file.type !== "application/pdf"){
 
-            file.type !==
-            "application/pdf"
-
-        ){
-
-            alert(
-
-                "يسمح فقط بملفات PDF"
-
-            );
+            alert("يسمح فقط بملفات PDF");
 
             pdfFile.value="";
 
-            selectedFile.innerHTML=
-
-            "لم يتم اختيار أي ملف";
+            selectedFile.innerHTML="لم يتم اختيار أي ملف";
 
             return;
 
@@ -206,15 +193,14 @@ pdfFile.addEventListener(
 
             "<br>"+
 
-            (file.size/1024/1024)
-
-            .toFixed(2)+
+            (file.size/1024/1024).toFixed(2)+
 
             " MB";
 
     }
 
 );
+
 /* ==========================
    Upload Report
 ========================== */
@@ -249,9 +235,7 @@ async function uploadReport(){
 
     reader.onload = async ()=>{
 
-        const base64 =
-
-        reader.result.split(",")[1];
+        const base64 = reader.result.split(",")[1];
 
         const result = await api(
 
@@ -259,37 +243,19 @@ async function uploadReport(){
 
             {
 
-                employeeId:
+                employeeId: currentUser.id,
 
-                currentUser.id,
+                employeeName: currentUser.name,
 
-                employeeName:
+                department: currentUser.department,
 
-                currentUser.name,
+                week: getMonthWeek(new Date()),
 
-                department:
+                fileName: file.name,
 
-                currentUser.department,
+                mimeType: file.type,
 
-                week:
-
-                getMonthWeek(
-
-                    new Date()
-
-                ),
-
-                fileName:
-
-                file.name,
-
-                mimeType:
-
-                file.type,
-
-                fileData:
-
-                base64
+                fileData: base64
 
             }
 
@@ -303,11 +269,13 @@ async function uploadReport(){
 
             pdfFile.value="";
 
-            selectedFile.innerHTML=
-
-            "لم يتم اختيار أي ملف";
+            selectedFile.innerHTML="لم يتم اختيار أي ملف";
 
             loadReports();
+
+            uploadCard.style.display = "none";
+
+            successCard.style.display = "block";
 
         }
 
@@ -330,10 +298,47 @@ async function uploadReport(){
 }
 
 /* ==========================
-   Upload Permission
+   Start
 ========================== */
 
+checkWeeklyReport();
+
 checkUploadPermission();
+
+/* ==========================
+   Weekly Report Check
+========================== */
+
+async function checkWeeklyReport(){
+
+    const result = await api(
+
+        "checkWeeklyReport",
+
+        {
+
+            employeeId: currentUser.id,
+
+            week: getMonthWeek(new Date())
+
+        }
+
+    );
+
+    if(!result.success) return;
+
+    if(result.uploaded){
+
+        uploadCard.style.display = "none";
+
+        successCard.style.display = "block";
+
+    }
+
+}
+/* ==========================
+   Upload Permission
+========================== */
 
 async function checkUploadPermission(){
 
@@ -341,25 +346,48 @@ async function checkUploadPermission(){
 
     if(!result.success) return;
 
+    // إذا كان الموظف رفع التقرير بالفعل فلا تعرض رسالة الإغلاق
+    const weekly = await api(
+
+        "checkWeeklyReport",
+
+        {
+
+            employeeId: currentUser.id,
+
+            week: getMonthWeek(new Date())
+
+        }
+
+    );
+
+    if(weekly.success && weekly.uploaded){
+
+        uploadNotice.style.display = "none";
+
+        return;
+
+    }
+
     const settings = result.settings;
 
-const dayNames = {
+    const dayNames = {
 
-    0:"الأحد",
+        0:"الأحد",
 
-    1:"الإثنين",
+        1:"الإثنين",
 
-    2:"الثلاثاء",
+        2:"الثلاثاء",
 
-    3:"الأربعاء",
+        3:"الأربعاء",
 
-    4:"الخميس",
+        4:"الخميس",
 
-    5:"الجمعة",
+        5:"الجمعة",
 
-    6:"السبت"
+        6:"السبت"
 
-};
+    };
 
     function formatTime(time){
 
@@ -381,7 +409,7 @@ const dayNames = {
 
     const now = new Date();
 
-const todayName = String(now.getDay());
+    const todayName = String(now.getDay());
 
     const currentTime =
 
@@ -474,6 +502,7 @@ const todayName = String(now.getDay());
     `;
 
 }
+
 /* ==========================
    Previous Reports
 ========================== */
@@ -488,9 +517,7 @@ async function loadReports(){
 
         {
 
-            employeeId:
-
-            currentUser.id
+            employeeId: currentUser.id
 
         }
 
@@ -498,7 +525,7 @@ async function loadReports(){
 
     if(!result.success){
 
-        reportsTable.innerHTML=
+        reportsTable.innerHTML =
 
         '<div class="empty">تعذر تحميل التقارير</div>';
 
@@ -506,9 +533,9 @@ async function loadReports(){
 
     }
 
-    if(result.reports.length===0){
+    if(result.reports.length === 0){
 
-        reportsTable.innerHTML=
+        reportsTable.innerHTML =
 
         '<div class="empty">لا توجد تقارير حتى الآن</div>';
 
@@ -516,7 +543,7 @@ async function loadReports(){
 
     }
 
-    let html="";
+    let html = "";
 
     result.reports.forEach(report=>{
 
@@ -546,7 +573,7 @@ async function loadReports(){
 
         );
 
-        html+=`
+        html += `
 
         <div class="report-item">
 
@@ -554,7 +581,7 @@ async function loadReports(){
 
                 <strong>
 
-                    الأسبوع ${report.week}
+                    ${report.week}
 
                 </strong>
 
@@ -582,8 +609,6 @@ async function loadReports(){
 
     });
 
-    reportsTable.innerHTML=
-
-    html;
+    reportsTable.innerHTML = html;
 
 }
