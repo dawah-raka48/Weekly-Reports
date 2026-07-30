@@ -37,25 +37,25 @@ menuCards.forEach(card => {
 
 function loadPage(page){
 
-    switch(page){
+switch(page){
 
-        case "employees":
+    case "reports":
 
-            employeesPage();
+        reportsPage();
 
-            break;
+        break;
 
-        case "reports":
+    case "employees":
 
-            reportsPage();
+        employeesPage();
 
-            break;
+        break;
 
-        case "settings":
+    case "settings":
 
-            settingsPage();
+        settingsPage();
 
-            break;
+        break;
 
     }
 
@@ -510,7 +510,15 @@ setInterval(updateClock,1000);
    Default
 ========================== */
 
-employeesPage();
+document.querySelectorAll(".menu-card").forEach(btn=>{
+    btn.classList.remove("active");
+});
+
+document
+    .querySelector('[data-page="reports"]')
+    .classList.add("active");
+
+reportsPage();
 
 /* ==========================================
    Employee Modal
@@ -814,5 +822,26 @@ async function saveSettings(){
         alert(result.message);
 
     }
+
+}
+/* ==========================
+   Logout
+========================== */
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+if(logoutBtn){
+
+    logoutBtn.addEventListener("click",()=>{
+
+        const ok = confirm("هل تريد تسجيل الخروج؟");
+
+        if(!ok) return;
+
+        localStorage.removeItem("currentUser");
+
+        location.replace("index.html");
+
+    });
 
 }
