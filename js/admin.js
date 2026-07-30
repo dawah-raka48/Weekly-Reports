@@ -9,10 +9,6 @@ let employeesData = [];
 
 let editingEmployeeId = null;
 
-/* ==========================
-   Menu
-========================== */
-
 const menuCards = document.querySelectorAll(".menu-card");
 
 menuCards.forEach(card => {
@@ -27,7 +23,9 @@ menuCards.forEach(card => {
 
         card.classList.add("active");
 
-        loadPage(card.dataset.page);
+        const page = card.dataset.page;
+
+        loadPage(page);
 
     });
 
@@ -39,25 +37,25 @@ menuCards.forEach(card => {
 
 function loadPage(page){
 
-    switch(page){
+switch(page){
 
-        case "reports":
+    case "reports":
 
-            reportsPage();
+        reportsPage();
 
-            break;
+        break;
 
-        case "employees":
+    case "employees":
 
-            employeesPage();
+        employeesPage();
 
-            break;
+        break;
 
-        case "settings":
+    case "settings":
 
-            settingsPage();
+        settingsPage();
 
-            break;
+        break;
 
     }
 
@@ -67,15 +65,15 @@ function loadPage(page){
    Employees
 ========================== */
 
-async function employeesPage(){
+async function employeesPage() {
 
     const result = await api("getEmployees");
-
-    employeesData = result.employees || [];
-
+    
+    employeesData = result.employees;
+    
     let rows = "";
 
-    employeesData.forEach(employee=>{
+    result.employees.forEach(employee => {
 
         rows += `
 
@@ -91,9 +89,9 @@ async function employeesPage(){
 
 <td>
 
-<span class="status ${employee.status==="active"?"active":"stop"}">
+<span class="status ${employee.status === "active" ? "active" : "stop"}">
 
-${employee.status==="active"?"نشط":"موقوف"}
+${employee.status === "active" ? "نشط" : "موقوف"}
 
 </span>
 
@@ -104,9 +102,7 @@ ${employee.status==="active"?"نشط":"موقوف"}
 <div class="actions">
 
 <button
-
 class="icon-btn edit-btn"
-
 onclick="editEmployee(${employee.id})">
 
 <i class="fa-solid fa-pen"></i>
@@ -114,9 +110,7 @@ onclick="editEmployee(${employee.id})">
 </button>
 
 <button
-
 class="icon-btn delete-btn"
-
 onclick="deleteEmployee(${employee.id})">
 
 <i class="fa-solid fa-trash"></i>
@@ -191,191 +185,11 @@ ${rows}
 
 `;
 
+    // تشغيل نافذة إضافة الموظف
     setupEmployeeModal();
 
 }
 
-/* ==========================================
-   Employee Modal
-========================================== */
-
-function setupEmployeeModal(){
-
-    const addBtn = document.querySelector(".primary-btn");
-
-    const modal = document.getElementById("employeeModal");
-
-    const closeBtn = document.getElementById("closeModal");
-
-    if(!addBtn || !modal || !closeBtn) return;
-
-    addBtn.onclick = ()=>{
-
-        modal.classList.add("show");
-
-    };
-
-    closeBtn.onclick = ()=>{
-
-        modal.classList.remove("show");
-
-    };
-
-    modal.onclick = e=>{
-
-        if(e.target===modal){
-
-            modal.classList.remove("show");
-
-        }
-
-    };
-
-}
-
-/* ==========================================
-   Save Employee
-========================================== */
-
-window.addEventListener("DOMContentLoaded",()=>{
-
-    const btn = document.getElementById("saveEmployee");
-
-    if(btn){
-
-        btn.addEventListener("click",saveEmployee);
-
-    }
-
-});
-
-async function saveEmployee(){
-
-    const name = document.getElementById("empName").value.trim();
-
-    const username = document.getElementById("empUsername").value.trim();
-
-    const password = document.getElementById("empPassword").value.trim();
-
-    const department = document.getElementById("empDepartment").value;
-
-    const role = document.getElementById("empRole").value;
-
-    if(!name || !username || !password){
-
-        await showWarning("يرجى إدخال جميع البيانات");
-
-        return;
-
-    }
-
-    const action = editingEmployeeId
-
-        ? "updateEmployee"
-
-        : "addEmployee";
-
-    const result = await api(action,{
-
-        id:editingEmployeeId,
-
-        name,
-
-        username,
-
-        password,
-
-        department,
-
-        role
-
-    });
-
-    if(result.success){
-
-        document.getElementById("empName").value="";
-
-        document.getElementById("empUsername").value="";
-
-        document.getElementById("empPassword").value="";
-
-        document.getElementById("empDepartment").selectedIndex=0;
-
-        document.getElementById("empRole").selectedIndex=0;
-
-        document.getElementById("employeeModal").classList.remove("show");
-
-        editingEmployeeId = null;
-
-        document.querySelector(".modal-title").textContent="إضافة موظف";
-
-        await employeesPage();
-
-        await showSuccess("تم حفظ بيانات الموظف بنجاح");
-
-    }else{
-
-        await showError(result.message);
-
-    }
-
-}
-
-function editEmployee(id){
-
-    editingEmployeeId=id;
-
-    const employee=employeesData.find(
-
-        e=>Number(e.id)===Number(id)
-
-    );
-
-    if(!employee) return;
-
-    document.getElementById("empName").value=employee.name;
-
-    document.getElementById("empUsername").value=employee.username;
-
-    document.getElementById("empPassword").value=employee.password;
-
-    document.getElementById("empDepartment").value=employee.department;
-
-    document.getElementById("empRole").value=employee.role;
-
-    document.querySelector(".modal-title").textContent="تعديل الموظف";
-
-    document.getElementById("employeeModal").classList.add("show");
-
-}
-
-async function deleteEmployee(id){
-
-    const ok = await showConfirm(
-
-        "هل تريد حذف هذا الموظف؟",
-
-        "حذف موظف"
-
-    );
-
-    if(!ok) return;
-
-    const result = await api("deleteEmployee",{id});
-
-    if(result.success){
-
-        await employeesPage();
-
-        await showSuccess("تم حذف الموظف بنجاح");
-
-    }else{
-
-        await showError(result.message);
-
-    }
-
-}
 /* ==========================
    Reports
 ========================== */
@@ -390,17 +204,17 @@ async function reportsPage(){
 
         rows = `
 
-<tr>
+        <tr>
 
-<td colspan="7">
+            <td colspan="7">
 
-لا توجد تقارير
+                لا توجد تقارير
 
-</td>
+            </td>
 
-</tr>
+        </tr>
 
-`;
+        `;
 
     }else{
 
@@ -408,63 +222,63 @@ async function reportsPage(){
 
             rows += `
 
-<tr>
+            <tr>
 
-<td>${report.employeeName}</td>
+                <td>${report.employeeName}</td>
 
-<td>${report.department}</td>
+                <td>${report.department}</td>
 
-<td>${report.week}</td>
+                <td>${report.week}</td>
 
-<td>${new Date(report.uploadDate).toLocaleString("ar-EG",{
+                <td>${new Date(report.uploadDate).toLocaleString("ar-EG",{
 
-year:"numeric",
+                    year:"numeric",
 
-month:"2-digit",
+                    month:"2-digit",
 
-day:"2-digit",
+                    day:"2-digit",
 
-hour:"2-digit",
+                    hour:"2-digit",
 
-minute:"2-digit"
+                    minute:"2-digit"
 
-})}</td>
+                })}</td>
 
-<td>${report.status}</td>
+                <td>${report.status}</td>
 
-<td>
+                <td>
 
-<a
+                    <a
 
-href="${report.url}"
+                        href="${report.url}"
 
-target="_blank"
+                        target="_blank"
 
-class="view-btn">
+                        class="view-btn">
 
-عرض
+                        عرض
 
-</a>
+                    </a>
 
-</td>
+                </td>
 
-<td>
+                <td>
 
-<button
+                    <button
 
-class="delete-btn"
+                        class="delete-btn"
 
-onclick="deleteReport(${report.id})">
+                        onclick="deleteReport(${report.id})">
 
-حذف
+                        حذف
 
-</button>
+                    </button>
 
-</td>
+                </td>
 
-</tr>
+            </tr>
 
-`;
+            `;
 
         });
 
@@ -472,209 +286,93 @@ onclick="deleteReport(${report.id})">
 
     content.innerHTML = `
 
-<div class="section-title">
+    <div class="section-title">
 
-<h2>
+        <h2>
 
-<i class="fa-solid fa-file-pdf"></i>
+            <i class="fa-solid fa-file-pdf"></i>
 
-التقارير
+            التقارير
 
-</h2>
+        </h2>
 
-</div>
+    </div>
 
-<div class="filters">
+    <div class="filters">
 
-<input
+        <input
+            type="text"
+            id="searchName"
+            placeholder="🔍 البحث باسم الموظف">
 
-type="text"
+        <select id="searchDepartment">
 
-id="searchName"
+            <option value="">كل الأقسام</option>
 
-placeholder="🔍 البحث باسم الموظف">
+                    <option>الإدارية</option>
 
-<select id="searchDepartment">
+                    <option>المالية</option>
 
-<option value="">كل الأقسام</option>
+                    <option>الإعلام</option>
 
-<option>الإدارية</option>
+                    <option>قسم الدعوة</option>
+                    
+                    <option>الجاليات</option>
 
-<option>المالية</option>
+                    <option>القسم النسائي</option>
 
-<option>الإعلام</option>
+                    <option>مركز غيم</option>
 
-<option>قسم الدعوة</option>
+        </select>
 
-<option>الجاليات</option>
+        <input
+            type="date"
+            id="searchDate">
 
-<option>القسم النسائي</option>
+    </div>
 
-<option>مركز غيم</option>
+    <div class="table-container">
 
-</select>
+        <table>
 
-<input
+            <thead>
 
-type="date"
+                <tr>
 
-id="searchDate">
+                    <th>الموظف</th>
 
-</div>
+                    <th>القسم</th>
 
-<div class="table-container">
+                    <th>الأسبوع</th>
 
-<table>
+                    <th>تاريخ الرفع</th>
 
-<thead>
+                    <th>الحالة</th>
 
-<tr>
+                    <th>عرض</th>
 
-<th>الموظف</th>
+                    <th>حذف</th>
 
-<th>القسم</th>
+                </tr>
 
-<th>الأسبوع</th>
+            </thead>
 
-<th>تاريخ الرفع</th>
+            <tbody>
 
-<th>الحالة</th>
+                ${rows}
 
-<th>عرض</th>
+            </tbody>
 
-<th>حذف</th>
+        </table>
 
-</tr>
+    </div>
 
-</thead>
-
-<tbody>
-
-${rows}
-
-</tbody>
-
-</table>
-
-</div>
-
-`;
+    `;
 
     setupReportsFilter(result.reports);
 
 }
 
-/* ==========================
-   Delete Report
-========================== */
-
-async function deleteReport(id){
-
-    const ok = await showConfirm(
-
-        "هل تريد حذف هذا التقرير؟",
-
-        "حذف تقرير"
-
-    );
-
-    if(!ok) return;
-
-    const result = await api("deleteReport",{
-
-        id
-
-    });
-
-    if(result.success){
-
-        await reportsPage();
-
-        await showSuccess("تم حذف التقرير بنجاح");
-
-    }else{
-
-        await showError(result.message);
-
-    }
-
-}
-
-/* ==========================
-   Reports Filter
-========================== */
-
-function setupReportsFilter(reports){
-
-    const nameInput = document.getElementById("searchName");
-
-    const departmentInput = document.getElementById("searchDepartment");
-
-    const dateInput = document.getElementById("searchDate");
-
-    function filter(){
-
-        const name = nameInput.value.trim().toLowerCase();
-
-        const department = departmentInput.value;
-
-        const date = dateInput.value;
-
-        const rows = document.querySelectorAll("tbody tr");
-
-        rows.forEach((row,index)=>{
-
-            const report = reports[index];
-
-            if(!report) return;
-
-            let show = true;
-
-            if(name){
-
-                show = report.employeeName
-
-                    .toLowerCase()
-
-                    .includes(name);
-
-            }
-
-            if(show && department){
-
-                show = report.department === department;
-
-            }
-
-            if(show && date){
-
-                const d = new Date(report.uploadDate);
-
-                const reportDate =
-
-                    d.getFullYear()+"-"+
-
-                    String(d.getMonth()+1).padStart(2,"0")+"-"+
-
-                    String(d.getDate()).padStart(2,"0");
-
-                show = reportDate === date;
-
-            }
-
-            row.style.display = show ? "" : "none";
-
-        });
-
-    }
-
-    nameInput.addEventListener("input",filter);
-
-    departmentInput.addEventListener("change",filter);
-
-    dateInput.addEventListener("change",filter);
-
-}
 /* ==========================
    Settings
 ========================== */
@@ -687,92 +385,413 @@ async function settingsPage(){
 
     content.innerHTML = `
 
-<div class="section-title">
+    <div class="section-title">
 
-<h2>
+        <h2>
 
-<i class="fa-solid fa-gear"></i>
+            <i class="fa-solid fa-gear"></i>
 
-الإعدادات
+            الإعدادات
 
-</h2>
+        </h2>
 
-</div>
+    </div>
 
-<div class="settings-grid">
+    <div class="settings-grid">
 
-<div class="setting-card">
+        <div class="setting-card">
 
-<label>يوم رفع التقارير</label>
+            <label>يوم رفع التقارير</label>
 
 <select id="uploadDay">
 
-<option value="0">الأحد</option>
+    <option value="0">الأحد</option>
 
-<option value="1">الإثنين</option>
+    <option value="1">الإثنين</option>
 
-<option value="2">الثلاثاء</option>
+    <option value="2">الثلاثاء</option>
 
-<option value="3">الأربعاء</option>
+    <option value="3">الأربعاء</option>
 
-<option value="4">الخميس</option>
+    <option value="4">الخميس</option>
 
-<option value="5">الجمعة</option>
+    <option value="5">الجمعة</option>
 
-<option value="6">السبت</option>
+    <option value="6">السبت</option>
 
 </select>
 
-</div>
+        </div>
 
-<div class="setting-card">
+        <div class="setting-card">
 
-<label>وقت البداية</label>
+            <label>
 
-<input
-id="startTime"
-type="time">
+                وقت البداية
 
-</div>
+            </label>
 
-<div class="setting-card">
+            <input
+                id="startTime"
+                type="time">
 
-<label>وقت النهاية</label>
+        </div>
 
-<input
-id="endTime"
-type="time">
+        <div class="setting-card">
 
-</div>
+            <label>
 
-</div>
+                وقت النهاية
 
-<br>
+            </label>
 
-<button
-id="saveSettingsBtn"
-class="primary-btn">
+            <input
+                id="endTime"
+                type="time">
 
-<i class="fa-solid fa-floppy-disk"></i>
+        </div>
 
-حفظ الإعدادات
+    </div>
 
-</button>
+    <br>
 
-`;
+    <button
+        id="saveSettingsBtn"
+        class="primary-btn">
 
-    document.getElementById("uploadDay").value = settings.uploadDay;
+        <i class="fa-solid fa-floppy-disk"></i>
 
-    document.getElementById("startTime").value = settings.startTime;
+        حفظ الإعدادات
 
-    document.getElementById("endTime").value = settings.endTime;
+    </button>
+
+    `;
+
+    document.getElementById("uploadDay").value =
+        settings.uploadDay;
+
+    document.getElementById("startTime").value =
+        settings.startTime;
+
+    document.getElementById("endTime").value =
+        settings.endTime;
 
     document
         .getElementById("saveSettingsBtn")
-        .addEventListener("click", saveSettings);
+        .addEventListener("click",saveSettings);
 
 }
 
+/* ==========================
+   Clock
+========================== */
+
+function updateClock(){
+
+const now=new Date();
+
+document.getElementById("currentTime").innerHTML=
+
+now.toLocaleTimeString("ar-SA",{
+
+hour:"2-digit",
+
+minute:"2-digit"
+
+});
+
+document.getElementById("currentDate").innerHTML=
+
+now.toLocaleDateString("ar-SA");
+
+}
+
+updateClock();
+
+setInterval(updateClock,1000);
+
+/* ==========================
+   Default
+========================== */
+
+document.querySelectorAll(".menu-card").forEach(btn=>{
+    btn.classList.remove("active");
+});
+
+document
+    .querySelector('[data-page="reports"]')
+    .classList.add("active");
+
+reportsPage();
+
+/* ==========================================
+   Employee Modal
+========================================== */
+
+function setupEmployeeModal() {
+
+    const addBtn = document.querySelector(".primary-btn");
+
+    const modal = document.getElementById("employeeModal");
+
+    const closeBtn = document.getElementById("closeModal");
+
+    if (!addBtn || !modal || !closeBtn) return;
+
+    addBtn.onclick = () => {
+
+        modal.classList.add("show");
+
+    };
+
+    closeBtn.onclick = () => {
+
+        modal.classList.remove("show");
+
+    };
+
+    modal.onclick = (e) => {
+
+        if (e.target === modal) {
+
+            modal.classList.remove("show");
+
+        }
+
+    };
+
+}
+/* ==========================================
+   Save Employee
+========================================== */
+
+window.addEventListener("DOMContentLoaded", () => {
+
+    document
+        .getElementById("saveEmployee")
+        .addEventListener("click", saveEmployee);
+
+});
+
+async function saveEmployee(){
+
+    const name =
+    document.getElementById("empName").value.trim();
+
+    const username =
+    document.getElementById("empUsername").value.trim();
+
+    const password =
+    document.getElementById("empPassword").value.trim();
+
+    const department =
+    document.getElementById("empDepartment").value;
+
+    const role =
+    document.getElementById("empRole").value;
+
+    if(!name || !username || !password){
+
+        alert("يرجى إدخال جميع البيانات");
+
+        return;
+
+    }
+
+    const action = editingEmployeeId ? "updateEmployee" : "addEmployee";
+
+    const result = await api(action, {
+
+    id: editingEmployeeId,
+
+    name,
+
+    username,
+
+    password,
+
+    department,
+
+    role
+
+});
+
+        if (result.success) {
+
+        document.getElementById("empName").value = "";
+
+        document.getElementById("empUsername").value = "";
+
+        document.getElementById("empPassword").value = "";
+
+        document.getElementById("empDepartment").selectedIndex = 0;
+
+        document.getElementById("empRole").selectedIndex = 0;
+
+        document
+            .getElementById("employeeModal")
+            .classList
+            .remove("show");
+        editingEmployeeId = null;
+
+document.querySelector(".modal-title").textContent = "إضافة موظف";
+
+        await employeesPage();
+
+        alert("تمت إضافة الموظف بنجاح");
+
+    }
+
+}
+function editEmployee(id){
+
+    editingEmployeeId = id;
+
+    const employee = employeesData.find(e => Number(e.id) === Number(id));
+
+    if(!employee) return;
+
+    document.getElementById("empName").value = employee.name;
+
+    document.getElementById("empUsername").value = employee.username;
+
+    document.getElementById("empPassword").value = employee.password;
+
+    document.getElementById("empDepartment").value = employee.department;
+
+    document.getElementById("empRole").value = employee.role;
+
+    document.querySelector(".modal-title").textContent = "تعديل الموظف";
+
+    document.getElementById("employeeModal").classList.add("show");
+
+}
+async function deleteEmployee(id){
+
+    const ok = confirm("هل تريد حذف هذا الموظف؟");
+
+    if(!ok) return;
+
+    const result = await api("deleteEmployee",{
+
+        id
+
+    });
+
+    if(result.success){
+
+        await employeesPage();
+
+        alert("تم حذف الموظف بنجاح");
+
+    }else{
+
+        alert(result.message);
+
+    }
+
+}
+/* ==========================
+   Delete Report
+========================== */
+
+async function deleteReport(id){
+
+    const ok = confirm("هل تريد حذف هذا التقرير؟");
+
+    if(!ok) return;
+
+    const result = await api("deleteReport",{
+
+        id
+
+    });
+
+    if(result.success){
+
+        alert("تم حذف التقرير");
+
+        reportsPage();
+
+    }else{
+
+        alert(result.message);
+
+    }
+
+}
+/* ==========================
+   Reports Filter
+========================== */
+
+function setupReportsFilter(reports){
+
+    const nameInput = document.getElementById("searchName");
+    const departmentInput = document.getElementById("searchDepartment");
+    const dateInput = document.getElementById("searchDate");
+
+    function filter(){
+
+        const name = nameInput.value.trim().toLowerCase();
+        const department = departmentInput.value;
+        const date = dateInput.value;
+
+        const rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach((row,index)=>{
+
+            const report = reports[index];
+
+            if(!report) return;
+
+            let show = true;
+
+            // فلترة الاسم
+            if(name){
+
+                show = report.employeeName
+                    .toLowerCase()
+                    .includes(name);
+
+            }
+
+            // فلترة القسم
+            if(show && department){
+
+                show = report.department === department;
+
+            }
+
+            // فلترة التاريخ
+if(show && date){
+
+    const d = new Date(report.uploadDate);
+
+    const reportDate =
+
+        d.getFullYear() + "-" +
+
+        String(d.getMonth() + 1).padStart(2,"0") + "-" +
+
+        String(d.getDate()).padStart(2,"0");
+
+    show = reportDate === date;
+
+}
+
+            row.style.display = show ? "" : "none";
+
+        });
+
+    }
+
+    nameInput.addEventListener("input", filter);
+
+    departmentInput.addEventListener("change", filter);
+
+    dateInput.addEventListener("change", filter);
+
+}
 /* ==========================
    Save Settings
 ========================== */
@@ -800,64 +819,15 @@ async function saveSettings(){
 
     if(result.success){
 
-        await showSuccess("تم حفظ الإعدادات بنجاح");
+        alert("تم حفظ الإعدادات بنجاح");
 
     }else{
 
-        await showError(result.message);
+        alert(result.message);
 
     }
 
 }
-
-/* ==========================
-   Clock
-========================== */
-
-function updateClock(){
-
-    const now = new Date();
-
-    document.getElementById("currentTime").innerHTML =
-
-        now.toLocaleTimeString("ar-SA",{
-
-            hour:"2-digit",
-
-            minute:"2-digit"
-
-        });
-
-    document.getElementById("currentDate").innerHTML =
-
-        now.toLocaleDateString("ar-SA");
-
-}
-
-updateClock();
-
-setInterval(updateClock,1000);
-
-/* ==========================
-   Default Page
-========================== */
-
-document.querySelectorAll(".menu-card").forEach(btn=>{
-
-    btn.classList.remove("active");
-
-});
-
-const reportsBtn = document.querySelector('[data-page="reports"]');
-
-if(reportsBtn){
-
-    reportsBtn.classList.add("active");
-
-}
-
-reportsPage();
-
 /* ==========================
    Logout
 ========================== */
@@ -866,15 +836,9 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 if(logoutBtn){
 
-    logoutBtn.addEventListener("click", async ()=>{
+    logoutBtn.addEventListener("click",()=>{
 
-        const ok = await showConfirm(
-
-            "هل تريد تسجيل الخروج من النظام؟",
-
-            "تسجيل الخروج"
-
-        );
+        const ok = confirm("هل تريد تسجيل الخروج؟");
 
         if(!ok) return;
 
