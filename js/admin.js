@@ -9,6 +9,10 @@ let employeesData = [];
 
 let editingEmployeeId = null;
 
+/* ==========================
+   Menu
+========================== */
+
 const menuCards = document.querySelectorAll(".menu-card");
 
 menuCards.forEach(card => {
@@ -23,9 +27,7 @@ menuCards.forEach(card => {
 
         card.classList.add("active");
 
-        const page = card.dataset.page;
-
-        loadPage(page);
+        loadPage(card.dataset.page);
 
     });
 
@@ -37,25 +39,25 @@ menuCards.forEach(card => {
 
 function loadPage(page){
 
-switch(page){
+    switch(page){
 
-    case "reports":
+        case "reports":
 
-        reportsPage();
+            reportsPage();
 
-        break;
+            break;
 
-    case "employees":
+        case "employees":
 
-        employeesPage();
+            employeesPage();
 
-        break;
+            break;
 
-    case "settings":
+        case "settings":
 
-        settingsPage();
+            settingsPage();
 
-        break;
+            break;
 
     }
 
@@ -65,15 +67,15 @@ switch(page){
    Employees
 ========================== */
 
-async function employeesPage() {
+async function employeesPage(){
 
     const result = await api("getEmployees");
-    
-    employeesData = result.employees;
-    
+
+    employeesData = result.employees || [];
+
     let rows = "";
 
-    result.employees.forEach(employee => {
+    employeesData.forEach(employee=>{
 
         rows += `
 
@@ -89,9 +91,9 @@ async function employeesPage() {
 
 <td>
 
-<span class="status ${employee.status === "active" ? "active" : "stop"}">
+<span class="status ${employee.status==="active"?"active":"stop"}">
 
-${employee.status === "active" ? "نشط" : "موقوف"}
+${employee.status==="active"?"نشط":"موقوف"}
 
 </span>
 
@@ -102,7 +104,9 @@ ${employee.status === "active" ? "نشط" : "موقوف"}
 <div class="actions">
 
 <button
+
 class="icon-btn edit-btn"
+
 onclick="editEmployee(${employee.id})">
 
 <i class="fa-solid fa-pen"></i>
@@ -110,7 +114,9 @@ onclick="editEmployee(${employee.id})">
 </button>
 
 <button
+
 class="icon-btn delete-btn"
+
 onclick="deleteEmployee(${employee.id})">
 
 <i class="fa-solid fa-trash"></i>
@@ -185,350 +191,15 @@ ${rows}
 
 `;
 
-    // تشغيل نافذة إضافة الموظف
     setupEmployeeModal();
 
 }
-
-/* ==========================
-   Reports
-========================== */
-
-async function reportsPage(){
-
-    const result = await api("getReports");
-
-    let rows = "";
-
-    if(result.reports.length === 0){
-
-        rows = `
-
-        <tr>
-
-            <td colspan="7">
-
-                لا توجد تقارير
-
-            </td>
-
-        </tr>
-
-        `;
-
-    }else{
-
-        result.reports.forEach(report=>{
-
-            rows += `
-
-            <tr>
-
-                <td>${report.employeeName}</td>
-
-                <td>${report.department}</td>
-
-                <td>${report.week}</td>
-
-                <td>${new Date(report.uploadDate).toLocaleString("ar-EG",{
-
-                    year:"numeric",
-
-                    month:"2-digit",
-
-                    day:"2-digit",
-
-                    hour:"2-digit",
-
-                    minute:"2-digit"
-
-                })}</td>
-
-                <td>${report.status}</td>
-
-                <td>
-
-                    <a
-
-                        href="${report.url}"
-
-                        target="_blank"
-
-                        class="view-btn">
-
-                        عرض
-
-                    </a>
-
-                </td>
-
-                <td>
-
-                    <button
-
-                        class="delete-btn"
-
-                        onclick="deleteReport(${report.id})">
-
-                        حذف
-
-                    </button>
-
-                </td>
-
-            </tr>
-
-            `;
-
-        });
-
-    }
-
-    content.innerHTML = `
-
-    <div class="section-title">
-
-        <h2>
-
-            <i class="fa-solid fa-file-pdf"></i>
-
-            التقارير
-
-        </h2>
-
-    </div>
-
-    <div class="filters">
-
-        <input
-            type="text"
-            id="searchName"
-            placeholder="🔍 البحث باسم الموظف">
-
-        <select id="searchDepartment">
-
-            <option value="">كل الأقسام</option>
-
-                    <option>الإدارية</option>
-
-                    <option>المالية</option>
-
-                    <option>الإعلام</option>
-
-                    <option>قسم الدعوة</option>
-                    
-                    <option>الجاليات</option>
-
-                    <option>القسم النسائي</option>
-
-                    <option>مركز غيم</option>
-
-        </select>
-
-        <input
-            type="date"
-            id="searchDate">
-
-    </div>
-
-    <div class="table-container">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>الموظف</th>
-
-                    <th>القسم</th>
-
-                    <th>الأسبوع</th>
-
-                    <th>تاريخ الرفع</th>
-
-                    <th>الحالة</th>
-
-                    <th>عرض</th>
-
-                    <th>حذف</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                ${rows}
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    `;
-
-    setupReportsFilter(result.reports);
-
-}
-
-/* ==========================
-   Settings
-========================== */
-
-async function settingsPage(){
-
-    const result = await api("getSettings");
-
-    const settings = result.settings;
-
-    content.innerHTML = `
-
-    <div class="section-title">
-
-        <h2>
-
-            <i class="fa-solid fa-gear"></i>
-
-            الإعدادات
-
-        </h2>
-
-    </div>
-
-    <div class="settings-grid">
-
-        <div class="setting-card">
-
-            <label>يوم رفع التقارير</label>
-
-<select id="uploadDay">
-
-    <option value="0">الأحد</option>
-
-    <option value="1">الإثنين</option>
-
-    <option value="2">الثلاثاء</option>
-
-    <option value="3">الأربعاء</option>
-
-    <option value="4">الخميس</option>
-
-    <option value="5">الجمعة</option>
-
-    <option value="6">السبت</option>
-
-</select>
-
-        </div>
-
-        <div class="setting-card">
-
-            <label>
-
-                وقت البداية
-
-            </label>
-
-            <input
-                id="startTime"
-                type="time">
-
-        </div>
-
-        <div class="setting-card">
-
-            <label>
-
-                وقت النهاية
-
-            </label>
-
-            <input
-                id="endTime"
-                type="time">
-
-        </div>
-
-    </div>
-
-    <br>
-
-    <button
-        id="saveSettingsBtn"
-        class="primary-btn">
-
-        <i class="fa-solid fa-floppy-disk"></i>
-
-        حفظ الإعدادات
-
-    </button>
-
-    `;
-
-    document.getElementById("uploadDay").value =
-        settings.uploadDay;
-
-    document.getElementById("startTime").value =
-        settings.startTime;
-
-    document.getElementById("endTime").value =
-        settings.endTime;
-
-    document
-        .getElementById("saveSettingsBtn")
-        .addEventListener("click",saveSettings);
-
-}
-
-/* ==========================
-   Clock
-========================== */
-
-function updateClock(){
-
-const now=new Date();
-
-document.getElementById("currentTime").innerHTML=
-
-now.toLocaleTimeString("ar-SA",{
-
-hour:"2-digit",
-
-minute:"2-digit"
-
-});
-
-document.getElementById("currentDate").innerHTML=
-
-now.toLocaleDateString("ar-SA");
-
-}
-
-updateClock();
-
-setInterval(updateClock,1000);
-
-/* ==========================
-   Default
-========================== */
-
-document.querySelectorAll(".menu-card").forEach(btn=>{
-    btn.classList.remove("active");
-});
-
-document
-    .querySelector('[data-page="reports"]')
-    .classList.add("active");
-
-reportsPage();
 
 /* ==========================================
    Employee Modal
 ========================================== */
 
-function setupEmployeeModal() {
+function setupEmployeeModal(){
 
     const addBtn = document.querySelector(".primary-btn");
 
@@ -536,23 +207,23 @@ function setupEmployeeModal() {
 
     const closeBtn = document.getElementById("closeModal");
 
-    if (!addBtn || !modal || !closeBtn) return;
+    if(!addBtn || !modal || !closeBtn) return;
 
-    addBtn.onclick = () => {
+    addBtn.onclick = ()=>{
 
         modal.classList.add("show");
 
     };
 
-    closeBtn.onclick = () => {
+    closeBtn.onclick = ()=>{
 
         modal.classList.remove("show");
 
     };
 
-    modal.onclick = (e) => {
+    modal.onclick = e=>{
 
-        if (e.target === modal) {
+        if(e.target===modal){
 
             modal.classList.remove("show");
 
@@ -561,124 +232,136 @@ function setupEmployeeModal() {
     };
 
 }
+
 /* ==========================================
    Save Employee
 ========================================== */
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded",()=>{
 
-    document
-        .getElementById("saveEmployee")
-        .addEventListener("click", saveEmployee);
+    const btn = document.getElementById("saveEmployee");
+
+    if(btn){
+
+        btn.addEventListener("click",saveEmployee);
+
+    }
 
 });
 
 async function saveEmployee(){
 
-    const name =
-    document.getElementById("empName").value.trim();
+    const name = document.getElementById("empName").value.trim();
 
-    const username =
-    document.getElementById("empUsername").value.trim();
+    const username = document.getElementById("empUsername").value.trim();
 
-    const password =
-    document.getElementById("empPassword").value.trim();
+    const password = document.getElementById("empPassword").value.trim();
 
-    const department =
-    document.getElementById("empDepartment").value;
+    const department = document.getElementById("empDepartment").value;
 
-    const role =
-    document.getElementById("empRole").value;
+    const role = document.getElementById("empRole").value;
 
     if(!name || !username || !password){
 
-    await showWarning("يرجى إدخال جميع البيانات");
-    return;
+        await showWarning("يرجى إدخال جميع البيانات");
+
+        return;
 
     }
 
-    const action = editingEmployeeId ? "updateEmployee" : "addEmployee";
+    const action = editingEmployeeId
 
-    const result = await api(action, {
+        ? "updateEmployee"
 
-    id: editingEmployeeId,
+        : "addEmployee";
 
-    name,
+    const result = await api(action,{
 
-    username,
+        id:editingEmployeeId,
 
-    password,
+        name,
 
-    department,
+        username,
 
-    role
+        password,
 
-});
+        department,
 
-        if (result.success) {
+        role
 
-        document.getElementById("empName").value = "";
+    });
 
-        document.getElementById("empUsername").value = "";
+    if(result.success){
 
-        document.getElementById("empPassword").value = "";
+        document.getElementById("empName").value="";
 
-        document.getElementById("empDepartment").selectedIndex = 0;
+        document.getElementById("empUsername").value="";
 
-        document.getElementById("empRole").selectedIndex = 0;
+        document.getElementById("empPassword").value="";
 
-        document
-            .getElementById("employeeModal")
-            .classList
-            .remove("show");
+        document.getElementById("empDepartment").selectedIndex=0;
+
+        document.getElementById("empRole").selectedIndex=0;
+
+        document.getElementById("employeeModal").classList.remove("show");
+
         editingEmployeeId = null;
 
-document.querySelector(".modal-title").textContent = "إضافة موظف";
+        document.querySelector(".modal-title").textContent="إضافة موظف";
 
         await employeesPage();
 
-        await showSuccess("تمت إضافة الموظف بنجاح");
+        await showSuccess("تم حفظ بيانات الموظف بنجاح");
+
+    }else{
+
+        await showError(result.message);
 
     }
 
 }
+
 function editEmployee(id){
 
-    editingEmployeeId = id;
+    editingEmployeeId=id;
 
-    const employee = employeesData.find(e => Number(e.id) === Number(id));
+    const employee=employeesData.find(
+
+        e=>Number(e.id)===Number(id)
+
+    );
 
     if(!employee) return;
 
-    document.getElementById("empName").value = employee.name;
+    document.getElementById("empName").value=employee.name;
 
-    document.getElementById("empUsername").value = employee.username;
+    document.getElementById("empUsername").value=employee.username;
 
-    document.getElementById("empPassword").value = employee.password;
+    document.getElementById("empPassword").value=employee.password;
 
-    document.getElementById("empDepartment").value = employee.department;
+    document.getElementById("empDepartment").value=employee.department;
 
-    document.getElementById("empRole").value = employee.role;
+    document.getElementById("empRole").value=employee.role;
 
-    document.querySelector(".modal-title").textContent = "تعديل الموظف";
+    document.querySelector(".modal-title").textContent="تعديل الموظف";
 
     document.getElementById("employeeModal").classList.add("show");
 
 }
+
 async function deleteEmployee(id){
 
     const ok = await showConfirm(
-       "هل تريد حذف هذا الموظف؟",
-       "حذف موظف"
+
+        "هل تريد حذف هذا الموظف؟",
+
+        "حذف موظف"
+
     );
 
-if(!ok) return;
+    if(!ok) return;
 
-    const result = await api("deleteEmployee",{
-
-        id
-
-    });
+    const result = await api("deleteEmployee",{id});
 
     if(result.success){
 
@@ -694,17 +377,208 @@ if(!ok) return;
 
 }
 /* ==========================
+   Reports
+========================== */
+
+async function reportsPage(){
+
+    const result = await api("getReports");
+
+    let rows = "";
+
+    if(result.reports.length === 0){
+
+        rows = `
+
+<tr>
+
+<td colspan="7">
+
+لا توجد تقارير
+
+</td>
+
+</tr>
+
+`;
+
+    }else{
+
+        result.reports.forEach(report=>{
+
+            rows += `
+
+<tr>
+
+<td>${report.employeeName}</td>
+
+<td>${report.department}</td>
+
+<td>${report.week}</td>
+
+<td>${new Date(report.uploadDate).toLocaleString("ar-EG",{
+
+year:"numeric",
+
+month:"2-digit",
+
+day:"2-digit",
+
+hour:"2-digit",
+
+minute:"2-digit"
+
+})}</td>
+
+<td>${report.status}</td>
+
+<td>
+
+<a
+
+href="${report.url}"
+
+target="_blank"
+
+class="view-btn">
+
+عرض
+
+</a>
+
+</td>
+
+<td>
+
+<button
+
+class="delete-btn"
+
+onclick="deleteReport(${report.id})">
+
+حذف
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+        });
+
+    }
+
+    content.innerHTML = `
+
+<div class="section-title">
+
+<h2>
+
+<i class="fa-solid fa-file-pdf"></i>
+
+التقارير
+
+</h2>
+
+</div>
+
+<div class="filters">
+
+<input
+
+type="text"
+
+id="searchName"
+
+placeholder="🔍 البحث باسم الموظف">
+
+<select id="searchDepartment">
+
+<option value="">كل الأقسام</option>
+
+<option>الإدارية</option>
+
+<option>المالية</option>
+
+<option>الإعلام</option>
+
+<option>قسم الدعوة</option>
+
+<option>الجاليات</option>
+
+<option>القسم النسائي</option>
+
+<option>مركز غيم</option>
+
+</select>
+
+<input
+
+type="date"
+
+id="searchDate">
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>الموظف</th>
+
+<th>القسم</th>
+
+<th>الأسبوع</th>
+
+<th>تاريخ الرفع</th>
+
+<th>الحالة</th>
+
+<th>عرض</th>
+
+<th>حذف</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${rows}
+
+</tbody>
+
+</table>
+
+</div>
+
+`;
+
+    setupReportsFilter(result.reports);
+
+}
+
+/* ==========================
    Delete Report
 ========================== */
 
 async function deleteReport(id){
 
     const ok = await showConfirm(
-    "هل تريد حذف هذا التقرير؟",
-    "حذف تقرير"
-);
 
-if(!ok) return;
+        "هل تريد حذف هذا التقرير؟",
+
+        "حذف تقرير"
+
+    );
+
+    if(!ok) return;
 
     const result = await api("deleteReport",{
 
@@ -714,17 +588,18 @@ if(!ok) return;
 
     if(result.success){
 
-        await showSuccess("تم حذف التقرير بنجاح");
+        await reportsPage();
 
-        reportsPage();
+        await showSuccess("تم حذف التقرير بنجاح");
 
     }else{
 
-        alert(result.message);
+        await showError(result.message);
 
     }
 
 }
+
 /* ==========================
    Reports Filter
 ========================== */
@@ -732,13 +607,17 @@ if(!ok) return;
 function setupReportsFilter(reports){
 
     const nameInput = document.getElementById("searchName");
+
     const departmentInput = document.getElementById("searchDepartment");
+
     const dateInput = document.getElementById("searchDate");
 
     function filter(){
 
         const name = nameInput.value.trim().toLowerCase();
+
         const department = departmentInput.value;
+
         const date = dateInput.value;
 
         const rows = document.querySelectorAll("tbody tr");
@@ -751,38 +630,37 @@ function setupReportsFilter(reports){
 
             let show = true;
 
-            // فلترة الاسم
             if(name){
 
                 show = report.employeeName
+
                     .toLowerCase()
+
                     .includes(name);
 
             }
 
-            // فلترة القسم
             if(show && department){
 
                 show = report.department === department;
 
             }
 
-            // فلترة التاريخ
-if(show && date){
+            if(show && date){
 
-    const d = new Date(report.uploadDate);
+                const d = new Date(report.uploadDate);
 
-    const reportDate =
+                const reportDate =
 
-        d.getFullYear() + "-" +
+                    d.getFullYear()+"-"+
 
-        String(d.getMonth() + 1).padStart(2,"0") + "-" +
+                    String(d.getMonth()+1).padStart(2,"0")+"-"+
 
-        String(d.getDate()).padStart(2,"0");
+                    String(d.getDate()).padStart(2,"0");
 
-    show = reportDate === date;
+                show = reportDate === date;
 
-}
+            }
 
             row.style.display = show ? "" : "none";
 
@@ -790,13 +668,111 @@ if(show && date){
 
     }
 
-    nameInput.addEventListener("input", filter);
+    nameInput.addEventListener("input",filter);
 
-    departmentInput.addEventListener("change", filter);
+    departmentInput.addEventListener("change",filter);
 
-    dateInput.addEventListener("change", filter);
+    dateInput.addEventListener("change",filter);
 
 }
+/* ==========================
+   Settings
+========================== */
+
+async function settingsPage(){
+
+    const result = await api("getSettings");
+
+    const settings = result.settings;
+
+    content.innerHTML = `
+
+<div class="section-title">
+
+<h2>
+
+<i class="fa-solid fa-gear"></i>
+
+الإعدادات
+
+</h2>
+
+</div>
+
+<div class="settings-grid">
+
+<div class="setting-card">
+
+<label>يوم رفع التقارير</label>
+
+<select id="uploadDay">
+
+<option value="0">الأحد</option>
+
+<option value="1">الإثنين</option>
+
+<option value="2">الثلاثاء</option>
+
+<option value="3">الأربعاء</option>
+
+<option value="4">الخميس</option>
+
+<option value="5">الجمعة</option>
+
+<option value="6">السبت</option>
+
+</select>
+
+</div>
+
+<div class="setting-card">
+
+<label>وقت البداية</label>
+
+<input
+id="startTime"
+type="time">
+
+</div>
+
+<div class="setting-card">
+
+<label>وقت النهاية</label>
+
+<input
+id="endTime"
+type="time">
+
+</div>
+
+</div>
+
+<br>
+
+<button
+id="saveSettingsBtn"
+class="primary-btn">
+
+<i class="fa-solid fa-floppy-disk"></i>
+
+حفظ الإعدادات
+
+</button>
+
+`;
+
+    document.getElementById("uploadDay").value = settings.uploadDay;
+
+    document.getElementById("startTime").value = settings.startTime;
+
+    document.getElementById("endTime").value = settings.endTime;
+
+    document
+        .getElementById("saveSettingsBtn")
+        .addEventListener("click", saveSettings);
+
+}
+
 /* ==========================
    Save Settings
 ========================== */
@@ -828,11 +804,60 @@ async function saveSettings(){
 
     }else{
 
-        alert(result.message);
+        await showError(result.message);
 
     }
 
 }
+
+/* ==========================
+   Clock
+========================== */
+
+function updateClock(){
+
+    const now = new Date();
+
+    document.getElementById("currentTime").innerHTML =
+
+        now.toLocaleTimeString("ar-SA",{
+
+            hour:"2-digit",
+
+            minute:"2-digit"
+
+        });
+
+    document.getElementById("currentDate").innerHTML =
+
+        now.toLocaleDateString("ar-SA");
+
+}
+
+updateClock();
+
+setInterval(updateClock,1000);
+
+/* ==========================
+   Default Page
+========================== */
+
+document.querySelectorAll(".menu-card").forEach(btn=>{
+
+    btn.classList.remove("active");
+
+});
+
+const reportsBtn = document.querySelector('[data-page="reports"]');
+
+if(reportsBtn){
+
+    reportsBtn.classList.add("active");
+
+}
+
+reportsPage();
+
 /* ==========================
    Logout
 ========================== */
@@ -841,12 +866,17 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 if(logoutBtn){
 
-    logoutBtn.addEventListener("click",()=>{
+    logoutBtn.addEventListener("click", async ()=>{
 
         const ok = await showConfirm(
-          "هل تريد تسجيل الخروج من النظام؟",
-          "تسجيل الخروج"
-);
+
+            "هل تريد تسجيل الخروج من النظام؟",
+
+            "تسجيل الخروج"
+
+        );
+
+        if(!ok) return;
 
         localStorage.removeItem("currentUser");
 
