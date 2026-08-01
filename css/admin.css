@@ -539,13 +539,41 @@ tbody tr:hover{
 
 .delete-btn{
 
-    background:#DC2626;
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#FEF2F2;
+
+    color:#DC2626;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transition:.30s;
+
+    font-size:16px;
 
 }
 
-.icon-btn:hover{
+.delete-btn:hover{
+
+    background:#DC2626;
+
+    color:#FFF;
 
     transform:scale(1.08);
+
+    box-shadow:0 12px 25px rgba(220,38,38,.30);
 
 }
 /* ==========================================
