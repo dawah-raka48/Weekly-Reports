@@ -264,17 +264,16 @@ async function reportsPage(){
 
                 <td>
 
-                    <button
+<button
+class="delete-btn"
+onclick="deleteReport(${report.id})"
+title="حذف التقرير">
 
-                        class="delete-btn"
+<i class="fa-solid fa-trash"></i>
 
-                        onclick="deleteReport(${report.id})">
+</button>
 
-                        حذف
-
-                    </button>
-
-                </td>
+</td>
 
             </tr>
 
