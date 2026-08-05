@@ -91,3 +91,59 @@ logoutBtn.onclick=()=>{
     }
 
 };
+
+/* ==========================
+   Menu
+========================== */
+
+const menuCards =
+
+document.querySelectorAll(".menu-card");
+
+menuCards.forEach(card=>{
+
+    card.addEventListener("click",()=>{
+
+        menuCards.forEach(item=>{
+
+            item.classList.remove("active");
+
+        });
+
+        card.classList.add("active");
+
+        loadPage(card.dataset.page);
+
+    });
+
+});
+
+/* ==========================
+   Load Pages
+========================== */
+
+function loadPage(page){
+
+    switch(page){
+
+        case "employees":
+
+            employeesPage();
+
+            break;
+
+        case "reports":
+
+            reportsPage();
+
+            break;
+
+    }
+
+}
+
+/* ==========================
+   Default Page
+========================== */
+
+employeesPage();
