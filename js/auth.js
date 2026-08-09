@@ -85,11 +85,23 @@ async function login() {
 
     );
 
+    /* ==========================
+       Redirect By Role
+    ========================== */
+
     if (result.user.role === "admin") {
 
         location.href = "admin.html";
 
-    } else {
+    }
+
+    else if (result.user.role === "manager") {
+
+        location.href = "manager.html";
+
+    }
+
+    else {
 
         location.href = "employee.html";
 
