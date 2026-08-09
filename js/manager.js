@@ -19,14 +19,20 @@ if (!currentUser) {
 
     location.href = "index.html";
 
+} else {
+
+    const userRole =
+        String(currentUser.role || "")
+        .trim()
+        .toLowerCase();
+
+    if (userRole !== "manager") {
+
+        location.href = "index.html";
+
+    }
+
 }
-
-if (currentUser.role !== "manager") {
-
-    location.href = "index.html";
-
-}
-
 /* ==========================
    Elements
 ========================== */
