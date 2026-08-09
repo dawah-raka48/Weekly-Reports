@@ -147,3 +147,103 @@ function loadPage(page){
 ========================== */
 
 employeesPage();
+
+/* ==========================
+   Employees
+========================== */
+
+async function employeesPage(){
+
+    const result = await api(
+
+        "getEmployees"
+
+    );
+
+    if(!result.success){
+
+        content.innerHTML="تعذر تحميل الموظفين";
+
+        return;
+
+    }
+
+    const employees = result.employees.filter(emp=>
+
+        emp.department===currentUser.department
+
+    );
+
+    let rows="";
+
+    employees.forEach(emp=>{
+
+        rows+=`
+
+<tr>
+
+<td>${emp.name}</td>
+
+<td>${emp.department}</td>
+
+<td>
+
+<span class="status active">
+
+${emp.status==="active"?"نشط":"موقوف"}
+
+</span>
+
+</td>
+
+</tr>
+
+`;
+
+    });
+
+    content.innerHTML=`
+
+<div class="section-title">
+
+<h2>
+
+<i class="fa-solid fa-users"></i>
+
+موظفو القسم
+
+</h2>
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>الاسم</th>
+
+<th>القسم</th>
+
+<th>الحالة</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${rows}
+
+</tbody>
+
+</table>
+
+</div>
+
+`;
+
+}
