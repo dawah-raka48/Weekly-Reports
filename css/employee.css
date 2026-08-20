@@ -587,3 +587,52 @@ main {
         padding: 8px 10px;
     }
 }
+/* ==========================================
+   Final Upload Card Fix
+   Employee Page Only
+========================================== */
+
+.employee-container .upload-card {
+    display: block !important;
+    width: 100%;
+}
+
+.employee-container .upload-card .upload-box {
+    width: 100% !important;
+    min-height: 300px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+}
+
+.employee-container .upload-card .upload-footer {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    margin-top: 18px !important;
+}
+
+.employee-container .upload-card .file-rule {
+    width: 100%;
+    text-align: center;
+}
+
+.employee-container .upload-card .primary-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 620px) {
+
+    .employee-container .upload-card .upload-box {
+        min-height: 260px;
+    }
+
+}
